@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/small_bg"
+    tools:context="com.apk4android.salluu3alayhie.ui.SplashScreen">
+
+    <LinearLayout
+        android:id="@+id/LinFirst"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imageSplashScreen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/sally"
+            android:contentDescription="TODO" />
+
+    </LinearLayout>
+
+    <!--<TextView-->
+    <!--android:id="@+id/textViewAya"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@id/LinFirst"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:padding="10dp"-->
+    <!--android:layout_marginTop="50dp"-->
+    <!--android:text="@string/the_aya"-->
+    <!--android:textColor="@color/colorFontAya"-->
+    <!--android:textSize="20sp" />-->
+
+</RelativeLayout>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/RLAbout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    tools:context="com.apk4android.salluu3alayhie.ui.AboutActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp">
+
+        <TextView
+            android:id="@+id/appName2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="22dp"
+            android:text="@string/txt_about"
+            android:textAlignment="center"
+            android:textColor="@color/colorFont"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/ImageAbout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_200sdp"
+            android:layout_below="@id/appName2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:contentDescription="TODO"
+            android:src="@drawable/about" />
+
+        <TextView
+            android:id="@+id/copyRights"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ImageAbout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_9sdp"
+            android:text="@string/aboutTextView"
+            android:textAlignment="center"
+            android:textColor="@color/colorFont"
+            android:textSize="@dimen/_18sdp" />
+
+        <TextView
+            android:id="@+id/wadelzbuair"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/copyRights"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:text="@string/wadelzbuair"
+            android:textAlignment="center"
+            android:textColor="#fff"
+            android:textSize="@dimen/_18sdp" />
+
+
+    </RelativeLayout>
+</RelativeLayout>

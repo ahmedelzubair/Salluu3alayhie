@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/small_bg"
+    tools:context="com.apk4android.salluu3alayhie.ui.MainActivity">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/ayaCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="2dp">
+
+        <TextView
+            android:id="@+id/textViewAya"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="@color/colorBGRadioGroup"
+            android:padding="10dp"
+            android:text="@string/the_aya"
+            android:textColor="@color/colorFontAya"
+            android:textSize="@dimen/_18sdp" />
+
+    </android.support.v7.widget.CardView>
+
+    <RelativeLayout
+        android:id="@+id/RelativeAll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ayaCard"
+        android:layout_marginLeft="@dimen/_15sdp"
+        android:layout_marginRight="@dimen/_15sdp">
+
+        <TextView
+            android:id="@+id/textViewChose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:text="@string/alarm_period"
+            android:textColor="@color/colorFont"
+            android:textColorLink="@android:color/background_dark"
+            android:textSize="@dimen/_15sdp" />
+
+        <TextView
+            android:id="@+id/textViewChoseVoiceType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textViewChose"
+            android:layout_alignBottom="@+id/textViewChose"
+            android:layout_marginEnd="@dimen/_52sdp"
+            android:layout_marginRight="@dimen/_52sdp"
+            android:layout_toLeftOf="@+id/textViewChose"
+            android:layout_toStartOf="@+id/textViewChose"
+            android:text="@string/choseNotiTaype"
+            android:textColor="@color/colorFont"
+            android:textColorLink="@android:color/background_dark"
+            android:textSize="@dimen/_15sdp" />
+
+        <LinearLayout
+            android:id="@+id/linVir"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewChoseVoiceType"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/LinRadioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewChoseVoiceType"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/NotificationTypeBtnStart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <RadioGroup
+                        android:id="@+id/rgNotiType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorBGRadioGroup">
+
+                        <RadioButton
+                            android:id="@+id/radioAya"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_8sdp"
+                            android:layout_marginRight="@dimen/_15sdp"
+                            android:buttonTint="@color/colorFont"
+                            android:text="تذكير بآية"
+                            android:textColor="@color/colorFont" />
+
+                        <RadioButton
+                            android:id="@+id/radioVoice"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_8sdp"
+                            android:layout_marginRight="@dimen/_15sdp"
+                            android:buttonTint="@color/colorFont"
+                            android:text="تذكير بصوت"
+                            android:textColor="@color/colorFont" />
+
+                    </RadioGroup>
+
+                    <Button
+                        android:id="@+id/btnStartAlarm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_11sdp"
+                        android:background="@drawable/buttons_style"
+                        android:onClick="startAlarm"
+                        android:text="ابدأ التذكير"
+                        android:textColor="@color/colorFont" />
+                </LinearLayout>
+
+                <RadioGroup
+                    android:id="@+id/rgTimes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:background="@color/colorBGRadioGroup">
+
+                    <RadioButton
+                        android:id="@+id/radio5Min"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_8sdp"
+                        android:layout_marginRight="@dimen/_15sdp"
+                        android:buttonTint="@color/colorFont"
+                        android:text="5 دقائق"
+                        android:textColor="@color/colorFont" />
+
+                    <RadioButton
+                        android:id="@+id/radio10Min"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_8sdp"
+                        android:layout_marginRight="@dimen/_15sdp"
+                        android:buttonTint="@color/colorFont"
+                        android:text="10 دقائق"
+                        android:textColor="@color/colorFont" />
+
+                    <RadioButton
+                        android:id="@+id/radio15Min"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_8sdp"
+                        android:layout_marginRight="@dimen/_15sdp"
+                        android:buttonTint="@color/colorFont"
+                        android:text="15 دقيقة"
+                        android:textColor="@color/colorFont" />
+
+                    <RadioButton
+                        android:id="@+id/radio20Min"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_8sdp"
+                        android:layout_marginRight="@dimen/_15sdp"
+                        android:buttonTint="@color/colorFont"
+                        android:text="20 دقيقة"
+                        android:textColor="@color/colorFont" />
+
+                    <RadioButton
+                        android:id="@+id/radio25Min"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_8sdp"
+                        android:layout_marginRight="@dimen/_15sdp"
+                        android:buttonTint="@color/colorFont"
+                        android:text="25 دقيقة"
+                        android:textColor="@color/colorFont" />
+
+                    <RadioButton
+                        android:id="@+id/radio30Min"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_8sdp"
+                        android:layout_marginRight="@dimen/_15sdp"
+                        android:buttonTint="@color/colorFont"
+                        android:text="30 دقيقة"
+                        android:textColor="@color/colorFont" />
+                </RadioGroup>
+
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:background="@drawable/buttons_style"
+                android:onClick="stopAlarm"
+                android:text="ايقاف التذكير"
+                android:textColor="@color/colorFont" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
