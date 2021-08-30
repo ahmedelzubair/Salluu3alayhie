@@ -4,7 +4,7 @@
     android:id="@+id/RLAbout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
+    android:background="@color/colorPrimaryDark"
     tools:context="com.apk4android.salluu3alayhie.ui.AboutActivity">
 
     <RelativeLayout
@@ -21,7 +21,7 @@
             android:layout_marginTop="22dp"
             android:text="@string/txt_about"
             android:textAlignment="gravity"
-            android:textColor="@color/colorFont"
+            android:textColor="@color/white"
             android:textSize="18sp" />
 
         <ImageView
@@ -43,7 +43,7 @@
             android:layout_marginTop="9dp"
             android:text="@string/aboutTextView"
             android:textAlignment="center"
-            android:textColor="@color/colorFont"
+            android:textColor="@color/white"
             android:textSize="25sp" />
 
         <TextView

@@ -5,61 +5,45 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioButton;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 
-import com.apk4android.salluu3alayhie.utils.CheckOnTask;
 import com.apk4android.salluu3alayhie.R;
+import com.apk4android.salluu3alayhie.common.BaseActivity;
 import com.apk4android.salluu3alayhie.services.RepeatService;
+import com.apk4android.salluu3alayhie.utils.CheckOnTask;
 
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     CheckOnTask check = new CheckOnTask();
     SharedPreferences sp;
     private AlarmManager am;
     private PendingIntent pi;
-    private RadioButton rb5Min;
-    private RadioButton rb10Min;
-    private RadioButton rb15Min;
-    private RadioButton rb20Min;
-    private RadioButton rb25Min;
-    private RadioButton rb30Min;
-    private RadioButton rbVoice;
-    private RadioButton rbAya;
+
+    private RadioButton rb5Min, rb10Min, rb15Min, rb20Min, rb25Min,
+            rb30Min;
+    private RadioButton rbVoice, rbAya;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //noinspection ConstantConditions
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.title);
-        RelativeLayout r = (RelativeLayout) findViewById(R.id.RLMain);
+        initViews();
+    }
 
-
-        int sdk = android.os.Build.VERSION.SDK_INT;
-        if (sdk <= Build.VERSION_CODES.LOLLIPOP) {
-            try {
-                r.setBackgroundColor(Color.parseColor("#f7c949"));
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-
-        //group = (RadioGroup) findViewById(R.id.radioGroup);
+    @Override
+    public void initViews() {
         rb5Min = (RadioButton) findViewById(R.id.radio5Min);
         rb10Min = (RadioButton) findViewById(R.id.radio10Min);
         rb15Min = (RadioButton) findViewById(R.id.radio15Min);
@@ -67,10 +51,8 @@ public class MainActivity extends AppCompatActivity {
         rb25Min = (RadioButton) findViewById(R.id.radio25Min);
         rb30Min = (RadioButton) findViewById(R.id.radio30Min);
 
-        rbVoice = (RadioButton) findViewById(R.id.radioVoice);
-        rbAya = (RadioButton) findViewById(R.id.radioAya);
-
-
+        rbVoice = (RadioButton) findViewById(R.id.rbVoice);
+        rbAya = (RadioButton) findViewById(R.id.rbAya);
     }
 
     @Override
@@ -86,20 +68,10 @@ public class MainActivity extends AppCompatActivity {
         switch (id) {
 
             case R.id.shareApp:
-                try {
-                    Intent i = new Intent(Intent.ACTION_SEND);
-                    i.setType("text/plain");
-                    i.putExtra(Intent.EXTRA_SUBJECT, "صلوا عليه");
-                    String sAux = "ارسل التطبيق الى اصدقائك واكسب الاجر \n\n";
-                    sAux = sAux + "https://play.google.com/store/apps/details?id=com.apk4android.salluu3alayhie \n\n";
-                    i.putExtra(Intent.EXTRA_TEXT, sAux);
-                    startActivity(Intent.createChooser(i, "اختر واحد"));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                shareApp();
                 break;
             case R.id.aboutApp:
-                startActivity(new Intent(MainActivity.this, AboutActivity.class));
+                openAbout();
                 break;
         }
 
@@ -107,18 +79,31 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void stopAlarm(View view) {
-        if (pi != null) {
-            am.cancel(pi);
-            check.setRunOnTaskRemoved(false);
-            Toast.makeText(this, "تم الايقاف", Toast.LENGTH_LONG).show();
+    private void openAbout() {
+        startActivity(new Intent(MainActivity.this, AboutActivity.class));
+    }
 
-        } else {
-            setAlarm(60000);
-            am.cancel(pi);
-            check.setRunOnTaskRemoved(false);
-            Toast.makeText(this, "تم الايقاف", Toast.LENGTH_LONG).show();
+    private void shareApp() {
+        try {
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.setType("text/plain");
+            i.putExtra(Intent.EXTRA_SUBJECT, "صلوا عليه");
+            String sAux = "ارسل التطبيق الى اصدقائك واكسب الاجر \n\n";
+            sAux = sAux + "https://play.google.com/store/apps/details?id=com.apk4android.salluu3alayhie \n\n";
+            i.putExtra(Intent.EXTRA_TEXT, sAux);
+            startActivity(Intent.createChooser(i, "اختر واحد"));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
+
+    public void stopAlarm(View view) {
+        if (pi == null) {
+            setAlarm(60000);
+        }
+        am.cancel(pi);
+        check.setRunOnTaskRemoved(false);
+        Toast.makeText(this, "تم الايقاف", Toast.LENGTH_LONG).show();
     }
 
     public void startAlarm(View view) {
@@ -179,25 +164,14 @@ public class MainActivity extends AppCompatActivity {
             editor.putString("TypeOfNotification", "Voice").apply();
         }
 
-//        else {
-//            Toast.makeText(this, "لم تقم بإختيار نوع التذكير !!", Toast.LENGTH_LONG).show();
-//        }
-
-
     }
 
 
     private void setAlarm(int p) {
-//        sp = this.getSharedPreferences("setTimes" , Context.MODE_PRIVATE);
-//        String type = sp.getString("TypeOfNoti" , "Aya");
-
         Intent i = new Intent(this, RepeatService.class);
-
         am = (AlarmManager) getSystemService(ALARM_SERVICE);
         pi = PendingIntent.getService(MainActivity.this, 0, i, 0);
-
         Calendar c = Calendar.getInstance();
-
         am.setRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), p, pi);
     }
 

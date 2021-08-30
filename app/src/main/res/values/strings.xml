@@ -3,13 +3,11 @@
     <string name="the_aya">
         إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ ۚ يَا أَيُّهَا الَّذِينَ آمَنُوا صَلُّوا عَلَيْهِ وَسَلِّمُوا تَسْلِيمًا (56)
 الاحزاب   </string>
-    <string name="alarm_period">اختر مدة التذكير :</string>
+    <string name="alarm_period">اختر مدة التذكير</string>
     <string name="aboutTextView">
-        طور بواسطة : ود الزبير \n
-        \u00a9 جميع الحقوق محفوظة
-    \n
+        طور بواسطة : شبكة ود الزبير
     </string>
-    <string name="choseNotiTaype">اختر نوع التذكير :</string>
+    <string name="choseNotiTaype">اختر نوع التذكير</string>
     <string name="txt_about">تطبيق التذكير بالصلاة على رسول الله صلى الله عليه وسلم</string>
     <string name="stop">ايقاف التذكير</string>
     <string name="start">ابدأ التذكير</string>

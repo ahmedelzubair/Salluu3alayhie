@@ -11,9 +11,10 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.apk4android.salluu3alayhie.R;
+import com.apk4android.salluu3alayhie.common.BaseActivity;
 
 @SuppressWarnings("ALL")
-public class SplashScreen extends AppCompatActivity {
+public class SplashScreen extends BaseActivity {
 
     private static int SPLASH_TIME_OUT = 3000;
 
