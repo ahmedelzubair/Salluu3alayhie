@@ -7,57 +7,64 @@
     android:background="@color/colorPrimaryDark"
     tools:context="com.apk4android.salluu3alayhie.ui.AboutActivity">
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="15dp">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/appName2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="22dp"
-            android:text="@string/txt_about"
-            android:textAlignment="gravity"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
-
-        <ImageView
-            android:id="@+id/ImageAbout"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_below="@id/appName2"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:contentDescription="TODO"
-            android:src="@drawable/about" />
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/spacing_xmedium">
 
-        <TextView
-            android:id="@+id/copyRights"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ImageAbout"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="9dp"
-            android:text="@string/aboutTextView"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="25sp" />
+            <TextView
+                android:id="@+id/appName2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="22dp"
+                android:text="@string/txt_about"
+                android:textAlignment="gravity"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/wadelzbuair"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/copyRights"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="3dp"
-            android:text="@string/ahmed_elzubair"
-            android:textAlignment="center"
-            android:textColor="#fff"
-            android:textSize="25sp" />
+            <ImageView
+                android:id="@+id/ImageAbout"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@id/appName2"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:contentDescription="TODO"
+                android:src="@drawable/about" />
+
+            <TextView
+                android:id="@+id/copyRights"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ImageAbout"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="9dp"
+                android:text="@string/aboutTextView"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/wadelzbuair"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/copyRights"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="3dp"
+                android:gravity="center"
+                android:text="@string/ahmed_elzubair"
+                android:textAlignment="center"
+                android:textColor="#fff"
+                android:textSize="18sp" />
 
 
-    </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+
 </RelativeLayout>

@@ -4,7 +4,7 @@
 
     <gradient
         android:startColor="@color/begay_trans"
-        android:endColor="@color/begay"
+        android:endColor="@color/colorPrimary"
         android:centerX="50%"
         android:centerY="50%"
         android:gradientRadius="90%"
