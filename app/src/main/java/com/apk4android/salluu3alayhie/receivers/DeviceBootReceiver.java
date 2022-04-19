@@ -1,5 +1,7 @@
 package com.apk4android.salluu3alayhie.receivers;
 
+import static android.content.Context.ALARM_SERVICE;
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -8,11 +10,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.apk4android.salluu3alayhie.services.RepeatService;
+import com.apk4android.salluu3alayhie.services.RepeatReminderService;
 
 import java.util.Calendar;
-
-import static android.content.Context.ALARM_SERVICE;
 
 /**
  * Created by Ahmed on 10/12/2017.
@@ -20,18 +20,18 @@ import static android.content.Context.ALARM_SERVICE;
 
 public class DeviceBootReceiver extends BroadcastReceiver {
 
-    SharedPreferences sp;
+    SharedPreferences sharedPreferences;
     private Context context;
-    private AlarmManager am;
-    private PendingIntent pi;
+    private AlarmManager alarmManager;
+    private PendingIntent pendingIntent;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         this.context = context;
-        sp = context.getSharedPreferences("setTimes", 0);
+        sharedPreferences = context.getSharedPreferences("setTimes", 0);
 
-        int time = sp.getInt("rb5Min", 60000);
-        String type = sp.getString("TypeOfNotification", "Voice");
+        int time = sharedPreferences.getInt("rb5Min", 60000);
+        String type = sharedPreferences.getString("TypeOfNotification", "Voice");
 
         assert intent != null;
         if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
@@ -44,19 +44,19 @@ public class DeviceBootReceiver extends BroadcastReceiver {
     }
 
     private void setAlarm(int p) {
-        sp = context.getSharedPreferences("setTimes", 0);
-        String type = sp.getString("TypeOfNotification", "Voice");
+        sharedPreferences = context.getSharedPreferences("setTimes", 0);
+        String type = sharedPreferences.getString("TypeOfNotification", "Voice");
 
-        SharedPreferences.Editor editor = sp.edit();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("TypeOfNotification", type).apply();
 
-        Intent i = new Intent(context, RepeatService.class);
-        am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        pi = PendingIntent.getService(context, 0, i, 0);
+        Intent i = new Intent(context, RepeatReminderService.class);
+        alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+        pendingIntent = PendingIntent.getService(context, 0, i, 0);
 
         Calendar c = Calendar.getInstance();
 
-        am.setRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), p, pi);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), p, pendingIntent);
     }
 
 }

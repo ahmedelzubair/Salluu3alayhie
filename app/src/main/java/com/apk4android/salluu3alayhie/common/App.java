@@ -1,6 +1,7 @@
 package com.apk4android.salluu3alayhie.common;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.apk4android.salluu3alayhie.R;
 
@@ -14,10 +15,20 @@ public class App extends Application {
 
     private static final String TAG = "AppTest.App";
     public static boolean isAppInForeground = false;
+    private static Application app;
+
+    public static Context getContext() {
+        return app.getApplicationContext();
+    }
+
+    public static Application getInstance() {
+        return app;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        app = this;
         // fonts
         initAppFonts();
     }

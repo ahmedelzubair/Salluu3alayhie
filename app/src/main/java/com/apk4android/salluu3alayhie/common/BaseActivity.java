@@ -8,10 +8,6 @@ import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 public class BaseActivity extends AppCompatActivity {
 
-//    public CompositionRoot getCompositionRoot() {
-//        return ((App) (getApplication())).getCompositionRoot();
-//    }
-
     public void initViews() {
 
     }

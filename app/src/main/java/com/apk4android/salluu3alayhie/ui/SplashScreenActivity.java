@@ -8,13 +8,12 @@ import android.os.Handler;
 import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.apk4android.salluu3alayhie.R;
 import com.apk4android.salluu3alayhie.common.BaseActivity;
 
 @SuppressWarnings("ALL")
-public class SplashScreen extends BaseActivity {
+public class SplashScreenActivity extends BaseActivity {
 
     private static int SPLASH_TIME_OUT = 3000;
 
@@ -51,7 +50,7 @@ public class SplashScreen extends BaseActivity {
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
-                Intent i = new Intent(SplashScreen.this, MainActivity.class);
+                Intent i = new Intent(SplashScreenActivity.this, MainActivity.class);
                 startActivity(i);
 
                 // close this activity

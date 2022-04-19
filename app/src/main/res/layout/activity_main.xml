@@ -100,6 +100,7 @@
                                 android:layout_marginLeft="@dimen/spacing_xmedium"
                                 android:layout_marginRight="@dimen/spacing_large"
                                 android:buttonTint="@color/white"
+                                android:checked="true"
                                 android:text="5 دقائق"
                                 android:textColor="@color/white" />
 
@@ -173,7 +174,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="16dp"
                                 android:gravity="center"
-                                android:text="@string/choseNotiTaype"
+                                android:text="@string/choseNotiType"
                                 android:textColor="@color/white"
                                 android:textColorLink="@android:color/background_dark"
                                 android:textSize="18sp" />
@@ -203,6 +204,7 @@
                                     android:layout_marginLeft="@dimen/spacing_xmedium"
                                     android:layout_marginRight="@dimen/spacing_large"
                                     android:buttonTint="@color/white"
+                                    android:checked="true"
                                     android:text="تذكير بصوت"
                                     android:textColor="@color/white" />
 

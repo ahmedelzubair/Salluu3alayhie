@@ -11,7 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.apk4android.salluu3alayhie.R;
 import com.apk4android.salluu3alayhie.common.BaseActivity;
@@ -26,8 +25,8 @@ public class AboutActivity extends BaseActivity {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.title);
 
-        RelativeLayout r = (RelativeLayout) findViewById(R.id.RLAbout);
-        TextView tvAbout = (TextView) findViewById(R.id.wadelzbuair);
+        RelativeLayout r = findViewById(R.id.RLAbout);
+        TextView tvAbout = findViewById(R.id.wadelzbuair);
 
         tvAbout.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,14 +1,17 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.gms.google-services'
+//apply plugin: 'com.google.gms.google-services' // Google services Gradle plugin
 
 android {
     compileSdkVersion 30
     buildToolsVersion '30.0.3'
     defaultConfig {
         applicationId "com.apk4android.salluu3alayhie"
-        minSdkVersion 14
+        minSdkVersion 19
         targetSdkVersion 30
-        versionCode 9
-        versionName "1.2.5"
+        versionCode 10
+        versionName "1.2.6"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
@@ -42,5 +45,10 @@ dependencies {
     // for all app fonts t
     implementation 'io.github.inflationx:calligraphy3:3.1.1'
     implementation 'io.github.inflationx:viewpump:2.0.3'
+
+    // Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:29.3.1')
+    implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-analytics'
 
 }
