@@ -17,19 +17,18 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:exported="true"
             android:name=".ui.MainActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
             android:exported="true"
+            android:screenOrientation="portrait"></activity>
+        <activity
             android:name=".ui.AboutActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.SplashScreenActivity"
-            android:label="@string/app_name"
             android:exported="true"
+            android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,8 +40,8 @@
         <service
             android:name=".services.RepeatReminderService"
             android:enabled="true"
-            android:label="Pray Service"
-            android:exported="false">
+            android:exported="false"
+            android:label="Pray Service">
             <intent-filter>
                 <action android:name="com.apk4android.salluu3alayhie" />
             </intent-filter>
@@ -50,9 +49,9 @@
 
         <receiver
             android:name=".receivers.DeviceBootReceiver"
-            android:label="StartMyServiceAtBootReceiver"
             android:enabled="true"
             android:exported="false"
+            android:label="StartMyServiceAtBootReceiver"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

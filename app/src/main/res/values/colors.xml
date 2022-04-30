@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#00325E</color>
-    <color name="colorPrimaryDark">#002C53</color>
-    <color name="colorPrimaryDoubleDark">#002647</color>
+    <color name="colorPrimary">#dfa500</color>
+    <color name="colorPrimaryDark">#c49000</color>
     <color name="colorAccent">#696566</color>
     <color name="colorFont">#252525</color>
+    <color name="colorPrimaryDoubleDark">#AF8100</color>
+
+
+    <!--    <color name="colorPrimary">#00325E</color>-->
+    <!--    <color name="colorPrimaryDark">#002C53</color>-->
+    <!--    <color name="colorPrimaryDoubleDark">#002647</color>-->
+    <!--    <color name="colorAccent">#696566</color>-->
+    <!--    <color name="colorFont">#252525</color>-->
 
     <color name="colorBGRadioGroup">#e2a803</color>
     <color name="colorFontAya">#000000</color>
-    <color name="small_bg" >#f7c949</color>
+    <color name="small_bg">#f7c949</color>
 
     <color name="begay_trans">#00dea005</color>
     <color name="begay">#daa203</color>

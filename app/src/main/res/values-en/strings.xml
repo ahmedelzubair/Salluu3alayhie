@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">صلِّ على محمد</string>
+    <!--    <string name="app_notification_desc">منبه الصلاة على محمد صلى الله عليه وسلم</string>-->
+    <string name="app_notification_desc">Prayer Alarm for prophet Mohammed pace be upon him</string>
+    <string name="the_aya">
+        Indeed, Allah showers His blessings upon the Prophet, and His angels pray for him. O  believers! Invoke Allah’s blessings upon him, and salute him with worthy greetings of peace.
+        Al-Ahzab verse 56.
+    </string>
+    <string name="alarm_period">Choose the duration of the reminder</string>
+    <string name="aboutTextView">
+       Developed by: The poor servant of God
+         \n
+       Ahmed Mohammed Elzubair
+        \n
+        Prayers for me and my parents for success, mercy and forgiveness if we leave this simple face
+    </string>
+    <string name="choseNotiType">Choose the type of reminder</string>
+    <string name="txt_about">This an android app for reminding you to pray on the Messenger and the servant of God, peace be upon him</string>
+    <string name="stop">Stop</string>
+    <string name="start">Start</string>
+    <string name="ahmed_elzubair">ahmedelzubair.com</string>
+
+    <string name="p_5_min">5 Min</string>
+    <string name="p_10_min">10 Min</string>
+    <string name="p_15_min">15 Min</string>
+    <string name="p_20_min">20 Min</string>
+    <string name="p_25_min">25 Min</string>
+    <string name="p_30_min">30 Min</string>
+    <string name="aya_reminder">Aya Reminder</string>
+    <string name="voice_reminder">Voice Reminder</string>
+
+    <string name="share_app">Share App</string>
+    <string name="about_app">About App</string>
+</resources>

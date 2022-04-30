@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="شارك التطبيق"
+    <item
         android:id="@+id/shareApp"
-        app:showAsAction="never"
-        />
-    <item android:title="عن التطبيق"
+        android:title="@string/share_app"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/aboutApp"
-        app:showAsAction="never"
-        />
+        android:title="@string/about_app"
+        app:showAsAction="never" />
 </menu>

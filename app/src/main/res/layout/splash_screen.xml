@@ -17,8 +17,8 @@
             android:id="@+id/imageSplashScreen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/sally"
-            android:contentDescription="TODO" />
+            android:contentDescription="TODO"
+            android:src="@drawable/sally" />
 
     </LinearLayout>
 
