@@ -15,48 +15,83 @@ import com.apk4android.salluu3alayhie.services.RepeatReminderService;
 import java.util.Calendar;
 
 /**
- * Created by Ahmed on 10/12/2017.
+ * Broadcast receiver for handling device boot completion.
+ * Restarts the prayer reminder service when the device reboots.
  */
-
 public class DeviceBootReceiver extends BroadcastReceiver {
 
-    SharedPreferences sharedPreferences;
-    private Context context;
-    private AlarmManager alarmManager;
-    private PendingIntent pendingIntent;
+    private static final String TAG = "DeviceBootReceiver";
+    private static final String PREF_NAME = "setTimes";
+    private static final String KEY_REPEAT_EVERY = "repeatEvery";
+    private static final String KEY_NOTIFICATION_TYPE = "TypeOfNotification";
+    private static final String DEFAULT_NOTIFICATION_TYPE = "Voice";
+    private static final int DEFAULT_REPEAT_TIME = 60000; // 1 minute
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        this.context = context;
-        sharedPreferences = context.getSharedPreferences("setTimes", 0);
-
-        int time = sharedPreferences.getInt("rb5Min", 60000);
-        String type = sharedPreferences.getString("TypeOfNotification", "Voice");
-
-        assert intent != null;
-        if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
-
-            Log.d("ON RECEIVE", "The time comes from radio buttons ...." + time);
-            Log.d("ON RECEIVE", "The voice type comes from radio buttons type ...." + type);
-            setAlarm(time);
+        if (intent == null || intent.getAction() == null) {
+            Log.w(TAG, "Received null intent or action");
+            return;
         }
 
+        if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
+            Log.d(TAG, "Device boot completed, restarting prayer reminder service");
+            restartPrayerReminderService(context);
+        }
     }
 
-    private void setAlarm(int p) {
-        sharedPreferences = context.getSharedPreferences("setTimes", 0);
-        String type = sharedPreferences.getString("TypeOfNotification", "Voice");
-
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("TypeOfNotification", type).apply();
-
-        Intent i = new Intent(context, RepeatReminderService.class);
-        alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        pendingIntent = PendingIntent.getService(context, 0, i, PendingIntent.FLAG_IMMUTABLE);
-
-        Calendar c = Calendar.getInstance();
-
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), p, pendingIntent);
+    /**
+     * Restart the prayer reminder service with saved preferences
+     */
+    private void restartPrayerReminderService(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        
+        // Get saved timer interval
+        int repeatTime = sharedPreferences.getInt(KEY_REPEAT_EVERY, DEFAULT_REPEAT_TIME);
+        String notificationType = sharedPreferences.getString(KEY_NOTIFICATION_TYPE, DEFAULT_NOTIFICATION_TYPE);
+        
+        Log.d(TAG, "Restarting service with interval: " + repeatTime + "ms, type: " + notificationType);
+        
+        // Schedule the alarm
+        scheduleAlarm(context, repeatTime);
     }
 
+    /**
+     * Schedule the alarm using AlarmManager
+     */
+    private void scheduleAlarm(Context context, int repeatTime) {
+        try {
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+            if (alarmManager == null) {
+                Log.e(TAG, "AlarmManager is null");
+                return;
+            }
+
+            // Create intent for the service
+            Intent serviceIntent = new Intent(context, RepeatReminderService.class);
+            PendingIntent pendingIntent = PendingIntent.getService(
+                context, 
+                0, 
+                serviceIntent, 
+                PendingIntent.FLAG_IMMUTABLE
+            );
+
+            // Calculate next trigger time
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.MILLISECOND, repeatTime);
+
+            // Schedule the alarm
+            alarmManager.setRepeating(
+                AlarmManager.RTC_WAKEUP,
+                calendar.getTimeInMillis(),
+                repeatTime,
+                pendingIntent
+            );
+
+            Log.d(TAG, "Alarm scheduled successfully for: " + repeatTime + "ms");
+            
+        } catch (Exception e) {
+            Log.e(TAG, "Error scheduling alarm", e);
+        }
+    }
 }

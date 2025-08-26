@@ -18,10 +18,16 @@ public class App extends Application {
     private static Application app;
 
     public static Context getContext() {
+        if (app == null) {
+            throw new IllegalStateException("Application context is not available. Make sure the Application class is properly initialized.");
+        }
         return app.getApplicationContext();
     }
 
     public static Application getInstance() {
+        if (app == null) {
+            throw new IllegalStateException("Application instance is not available. Make sure the Application class is properly initialized.");
+        }
         return app;
     }
 

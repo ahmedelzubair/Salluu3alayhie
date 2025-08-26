@@ -1,4 +1,6 @@
 *.iml
+*.apk
+*.aab
 .gradle
 /local.properties
 /.idea/workspace.xml
@@ -7,3 +9,5 @@
 /build
 /captures
 .externalNativeBuild
+./app/release/*
+./app/release/

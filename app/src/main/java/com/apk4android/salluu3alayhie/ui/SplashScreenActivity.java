@@ -30,10 +30,9 @@ public class SplashScreenActivity extends BaseActivity {
         RelativeLayout r = (RelativeLayout) findViewById(R.id.RLSplash);
 
         int sdk = android.os.Build.VERSION.SDK_INT;
-        if (sdk <= Build.VERSION_CODES.LOLLIPOP) {
+        if (sdk <= Build.VERSION_CODES.LOLLIPOP && r != null) {
             try {
                 r.setBackgroundColor(Color.parseColor("#f7c949"));
-
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
