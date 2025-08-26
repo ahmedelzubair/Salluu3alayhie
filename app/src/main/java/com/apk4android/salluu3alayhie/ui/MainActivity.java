@@ -114,13 +114,10 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id) {
-            case R.id.shareApp:
-                Utils.shareApp(this);
-                break;
-            case R.id.aboutApp:
-                openAbout();
-                break;
+        if (id == R.id.shareApp) {
+            Utils.shareApp(this);
+        } else if (id == R.id.aboutApp) {
+            openAbout();
         }
         return super.onOptionsItemSelected(item);
     }

@@ -52,7 +52,7 @@ public class DeviceBootReceiver extends BroadcastReceiver {
 
         Intent i = new Intent(context, RepeatReminderService.class);
         alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        pendingIntent = PendingIntent.getService(context, 0, i, 0);
+        pendingIntent = PendingIntent.getService(context, 0, i, PendingIntent.FLAG_IMMUTABLE);
 
         Calendar c = Calendar.getInstance();
 
