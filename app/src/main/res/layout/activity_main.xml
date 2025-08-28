@@ -6,245 +6,249 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
+    android:paddingTop="?attr/actionBarSize"
     tools:context="com.apk4android.salluu3alayhie.ui.MainActivity">
-
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:scrollbars="none"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="3dp">
 
+            <!-- Quran Verse Card -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/ayaCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_medium"
+                android:layout_marginBottom="8dp"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                app:cardCornerRadius="@dimen/spacing_xmedium"
-                app:cardElevation="3dp">
+                app:cardCornerRadius="5dp"
+                app:cardElevation="3dp"
+                app:cardBackgroundColor="@color/colorPrimaryDark">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="5dp">
 
                     <TextView
                         android:id="@+id/textViewAya"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"
-                        android:background="@color/colorPrimaryDark"
-                        android:padding="@dimen/spacing_medium"
+                        android:gravity="center"
+                        android:lineSpacingExtra="2dp"
                         android:text="@string/the_aya"
-                        android:textColor="#fff"
-                        android:textSize="18sp" />
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
 
-            <RelativeLayout
-                android:id="@+id/RelativeAll"
+            <!-- Timer Selection Card -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/ayaCard"
-                android:layout_margin="@dimen/spacing_medium">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="3dp"
+                app:cardBackgroundColor="@color/colorPrimaryDark">
 
-                <androidx.cardview.widget.CardView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/spacing_medium"
-                    android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    app:cardCornerRadius="@dimen/spacing_xmedium"
-                    app:cardElevation="3dp">
+                    android:orientation="vertical"
+                    android:padding="5dp">
 
-
-                    <LinearLayout
-                        android:id="@+id/LinRadioGroup"
+                    <TextView
+                        android:id="@+id/textViewChose"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorPrimaryDark"
+                        android:layout_marginBottom="12dp"
+                        android:gravity="center"
+                        android:text="@string/alarm_period"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <RadioGroup
+                        android:id="@+id/rgTimes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/textViewChose"
+                        <RadioButton
+                            android:id="@+id/radio5Min"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:gravity="center"
-                            android:text="@string/alarm_period"
+                            android:layout_marginBottom="4dp"
+                            android:buttonTint="@color/white"
+                            android:checked="true"
+                            android:padding="5dp"
+                            android:text="@string/p_5_min"
                             android:textColor="@color/white"
-                            android:textColorLink="@android:color/background_dark"
-                            android:textSize="18sp" />
+                            android:textSize="14sp" />
 
-
-                        <RadioGroup
-                            android:id="@+id/rgTimes"
+                        <RadioButton
+                            android:id="@+id/radio10Min"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginTop="7dp"
-                            android:layout_weight="1">
+                            android:layout_marginBottom="4dp"
+                            android:buttonTint="@color/white"
+                            android:padding="5dp"
+                            android:text="@string/p_10_min"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
 
-                            <RadioButton
-                                android:id="@+id/radio5Min"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/spacing_xmedium"
-                                android:layout_marginRight="@dimen/spacing_large"
-                                android:buttonTint="@color/white"
-                                android:checked="true"
-                                android:text="@string/p_5_min"
-                                android:textColor="@color/white" />
-
-                            <RadioButton
-                                android:id="@+id/radio10Min"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/spacing_xmedium"
-                                android:layout_marginRight="@dimen/spacing_large"
-                                android:buttonTint="@color/white"
-                                android:text="@string/p_10_min"
-                                android:textColor="@color/white" />
-
-                            <RadioButton
-                                android:id="@+id/radio15Min"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/spacing_xmedium"
-                                android:layout_marginRight="@dimen/spacing_large"
-                                android:buttonTint="@color/white"
-                                android:text="@string/p_15_min"
-                                android:textColor="@color/white" />
-
-                            <RadioButton
-                                android:id="@+id/radio20Min"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/spacing_xmedium"
-                                android:layout_marginRight="@dimen/spacing_large"
-                                android:buttonTint="@color/white"
-                                android:text="@string/p_20_min"
-                                android:textColor="@color/white" />
-
-                            <RadioButton
-                                android:id="@+id/radio25Min"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/spacing_xmedium"
-                                android:layout_marginRight="@dimen/spacing_large"
-                                android:buttonTint="@color/white"
-                                android:text="@string/p_25_min"
-                                android:textColor="@color/white" />
-
-                            <RadioButton
-                                android:id="@+id/radio30Min"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/spacing_xmedium"
-                                android:layout_marginRight="@dimen/spacing_large"
-                                android:buttonTint="@color/white"
-                                android:text="@string/p_30_min"
-                                android:textColor="@color/white" />
-                        </RadioGroup>
-
-                        <LinearLayout
-                            android:id="@+id/NotificationTypeBtnStart"
+                        <RadioButton
+                            android:id="@+id/radio15Min"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:orientation="vertical">
+                            android:layout_marginBottom="4dp"
+                            android:buttonTint="@color/white"
+                            android:padding="5dp"
+                            android:text="@string/p_15_min"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="@dimen/spacing_large"
-                                android:background="@color/white" />
+                        <RadioButton
+                            android:id="@+id/radio20Min"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:buttonTint="@color/white"
+                            android:padding="5dp"
+                            android:text="@string/p_20_min"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
 
-                            <TextView
-                                android:id="@+id/textViewChoseVoiceType"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="16dp"
-                                android:gravity="center"
-                                android:text="@string/choseNotiType"
-                                android:textColor="@color/white"
-                                android:textColorLink="@android:color/background_dark"
-                                android:textSize="18sp" />
+                        <RadioButton
+                            android:id="@+id/radio25Min"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:buttonTint="@color/white"
+                            android:padding="5dp"
+                            android:text="@string/p_25_min"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
 
-                            <RadioGroup
-                                android:id="@+id/rgNotiType"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="7dp">
+                        <RadioButton
+                            android:id="@+id/radio30Min"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:buttonTint="@color/white"
+                            android:padding="5dp"
+                            android:text="@string/p_30_min"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
 
-                                <RadioButton
-                                    android:id="@+id/rbAya"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="@dimen/spacing_xmedium"
-                                    android:layout_marginLeft="@dimen/spacing_xmedium"
-                                    android:layout_marginEnd="@dimen/spacing_large"
-                                    android:layout_marginRight="@dimen/spacing_large"
-                                    android:buttonTint="@color/white"
-                                    android:text="@string/aya_reminder"
-                                    android:textColor="@color/white" />
+                    </RadioGroup>
 
-                                <RadioButton
-                                    android:id="@+id/rbVoice"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="@dimen/spacing_xmedium"
-                                    android:layout_marginRight="@dimen/spacing_large"
-                                    android:buttonTint="@color/white"
-                                    android:checked="true"
-                                    android:text="@string/voice_reminder"
-                                    android:textColor="@color/white" />
+                </LinearLayout>
 
-                            </RadioGroup>
+            </androidx.cardview.widget.CardView>
 
-                            <Button
-                                android:id="@+id/btnStartAlarm"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="11dp"
-                                android:layout_marginBottom="@dimen/spacing_medium"
-                                android:background="@drawable/btn_rounded_primary"
-                                android:onClick="startAlarm"
-                                android:text="@string/start"
-                                android:textColor="#fff" />
-                        </LinearLayout>
+            <!-- Notification Type Selection Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp"
+                app:cardBackgroundColor="@color/colorPrimaryDark">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp">
 
-                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/textViewChoseVoiceType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:gravity="center"
+                        android:text="@string/choseNotiType"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
-                </androidx.cardview.widget.CardView>
+                    <RadioGroup
+                        android:id="@+id/rgNotiType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
+                        <RadioButton
+                            android:id="@+id/rbAya"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:buttonTint="@color/white"
+                            android:padding="5dp"
+                            android:text="@string/aya_reminder"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
 
-            </RelativeLayout>
+                        <RadioButton
+                            android:id="@+id/rbVoice"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="12dp"
+                            android:buttonTint="@color/white"
+                            android:checked="true"
+                            android:padding="5dp"
+                            android:text="@string/voice_reminder"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                    </RadioGroup>
+
+                    <Button
+                        android:id="@+id/btnStartAlarm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/btn_rounded_primary"
+                        android:onClick="startAlarm"
+                        android:padding="12dp"
+                        android:text="@string/start"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Stop Button -->
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/btn_rounded_red"
+                android:onClick="stopAlarm"
+                android:padding="12dp"
+                android:text="@string/stop"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
         </LinearLayout>
 
     </ScrollView>
-
-
-    <Button
-        android:id="@+id/btnCancel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="50dp"
-        android:background="@drawable/btn_rounded_red"
-        android:onClick="stopAlarm"
-        android:text="@string/stop"
-        android:textColor="@color/white" />
 
 </RelativeLayout>

@@ -2,7 +2,6 @@
 
     <!-- Default screen margins, per the Android Design guidelines. -->
 
-
     <!-- DefaultThumbnail screen margins, per the Android Design guidelines. -->
     <dimen name="actionBarSize">56dp</dimen>
 
@@ -21,5 +20,13 @@
     <dimen name="spacing_xxlarge">50dp</dimen>
     <dimen name="spacing_xxxlarge">55dp</dimen>
 
+    <!-- Additional dimensions for better screen compatibility -->
+    <dimen name="card_margin">16dp</dimen>
+    <dimen name="card_padding">16dp</dimen>
+    <dimen name="button_padding">16dp</dimen>
+    <dimen name="radio_button_padding">12dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="card_corner_radius">12dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
 
 </resources>
