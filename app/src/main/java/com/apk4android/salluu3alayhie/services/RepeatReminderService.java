@@ -223,7 +223,7 @@ public class RepeatReminderService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel serviceChannel = new NotificationChannel(
                     CHANNEL_ID,
-                    "Prayer Reminder Service",
+                    getString(R.string.prayer_reminder_service),
                     NotificationManager.IMPORTANCE_LOW
             );
             

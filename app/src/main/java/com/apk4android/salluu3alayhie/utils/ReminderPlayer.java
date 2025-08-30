@@ -55,7 +55,14 @@ public class ReminderPlayer {
             playSoundOrAya();
         } else {
             Log.d(TAG, "Sound system busy, showing toast instead");
-            Toast.makeText(context, "صل على محمد", Toast.LENGTH_SHORT).show();
+            // Show toast at top middle for better visibility
+            try {
+                Toast toast = Toast.makeText(context, context.getString(R.string.pray_on_muhammad), Toast.LENGTH_SHORT);
+                toast.setGravity(android.view.Gravity.TOP | android.view.Gravity.CENTER_HORIZONTAL, 0, 100);
+                toast.show();
+            } catch (Exception e) {
+                Log.e(TAG, "Error showing toast", e);
+            }
             notifyPlaybackComplete();
         }
     }

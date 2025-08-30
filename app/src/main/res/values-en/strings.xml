@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">صلِّ على محمد</string>
+    <string name="app_name">صلِّ على محمد</string>
     <!--    <string name="app_notification_desc">منبه الصلاة على محمد صلى الله عليه وسلم</string>-->
     <string name="app_notification_desc">Prayer Alarm for prophet Mohammed pace be upon him</string>
     <string name="the_aya">
-        Indeed, Allah showers His blessings upon the Prophet, and His angels pray for him. O  believers! Invoke Allah’s blessings upon him, and salute him with worthy greetings of peace.
+        Indeed, Allah showers His blessings upon the Prophet, and His angels pray for him. O believers! Invoke Allah\'s blessings upon him, and salute him with worthy greetings of peace.
         Al-Ahzab verse 56.
     </string>
     <string name="alarm_period">Choose the duration of the reminder</string>
@@ -31,4 +31,30 @@
 
     <string name="share_app">Share App</string>
     <string name="about_app">About App</string>
+    
+    <!-- Dialog strings -->
+    <string name="permission_required">Permission Required</string>
+    <string name="exact_alarm_permission_message">The app needs permission to schedule exact alarms. Please go to Settings and allow the app to schedule exact alarms.</string>
+    <string name="settings">Settings</string>
+    <string name="cancel">Cancel</string>
+    
+    <!-- Toast and notification messages -->
+    <string name="app_limited_functionality">The app will run with limited functionality</string>
+    <string name="please_select_timer">Please select a timer duration</string>
+    <string name="timer_started_message" formatted="false">Timer started for every %d %s</string>
+    <string name="minute">minute</string>
+    <string name="minutes">minutes</string>
+    <string name="timer_stopped">Timer stopped</string>
+    <string name="pray_on_muhammad">Pray on Muhammad</string>
+    
+    <!-- Share app strings -->
+    <string name="share_subject">Pray on him</string>
+    <string name="share_message">Send the app to your friends and earn reward \n\n</string>
+    <string name="choose_one">Choose one</string>
+    
+    <!-- Service strings -->
+    <string name="prayer_reminder_service">Prayer Reminder Service</string>
+    
+    <!-- Silent mode notification -->
+    <string name="mobile_silent_mode">Mobile is in silent mode - you may not hear the reminder</string>
 </resources>

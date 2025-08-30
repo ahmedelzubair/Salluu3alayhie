@@ -9,6 +9,7 @@ import android.util.Log;
 
 import android.view.View;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -53,7 +54,7 @@ public class MainActivity extends BaseActivity {
                     startRepeatingService();
                 } else {
                     Log.w(TAG, "Some permissions denied, starting service with limited functionality");
-                    Toast.makeText(this, "سيتم تشغيل التطبيق مع وظائف محدودة", Toast.LENGTH_LONG).show();
+                    Utils.showTopMiddleToast(this, getString(R.string.app_limited_functionality));
                     startRepeatingService();
                 }
             });
@@ -133,7 +134,7 @@ public class MainActivity extends BaseActivity {
             checkExactAlarmPermission();
             checkAndRequestPermissions();
         } else {
-            Toast.makeText(this, "يرجى اختيار وقت للتذكير", Toast.LENGTH_SHORT).show();
+            Utils.showTopMiddleToast(this, getString(R.string.please_select_timer), Toast.LENGTH_SHORT);
         }
     }
 
@@ -162,9 +163,9 @@ public class MainActivity extends BaseActivity {
      */
     private void showTimerStartedMessage(int timerValue) {
         int minutes = timerValue / Utils.MIN1;
-        String message = String.format("تم تشغيل التذكير لكل %d %s", minutes, 
-                minutes == 1 ? "دقيقة" : "دقائق");
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        String message = String.format(getString(R.string.timer_started_message), minutes, 
+                minutes == 1 ? getString(R.string.minute) : getString(R.string.minutes));
+        Utils.showTopMiddleToast(this, message);
     }
 
     /**
@@ -172,7 +173,7 @@ public class MainActivity extends BaseActivity {
      */
     public void stopAlarm(View view) {
         stopService(new Intent(this, RepeatReminderService.class));
-        Toast.makeText(this, "تم الايقاف", Toast.LENGTH_LONG).show();
+        Utils.showTopMiddleToast(this, getString(R.string.timer_stopped));
         Log.d(TAG, "Timer stopped");
     }
 
@@ -206,24 +207,24 @@ public class MainActivity extends BaseActivity {
     private void showExactAlarmPermissionDialog() {
         Log.d(TAG, "Creating exact alarm permission dialog");
         try {
-            AlertDialog dialog = new AlertDialog.Builder(this, R.style.AppTheme)
-                .setTitle("إذن مطلوب")
-                .setMessage("يحتاج التطبيق إلى إذن لتشغيل التنبيهات الدقيقة. يرجى الذهاب إلى الإعدادات والسماح للتطبيق بتشغيل التنبيهات الدقيقة.")
-                .setPositiveButton("الإعدادات", (dialogInterface, which) -> {
+            AlertDialog dialog = new AlertDialog.Builder(this, R.style.CustomAlertDialog)
+                .setTitle(getString(R.string.permission_required))
+                .setMessage(getString(R.string.exact_alarm_permission_message))
+                .setPositiveButton(getString(R.string.settings), (dialogInterface, which) -> {
                     Log.d(TAG, "User clicked Settings button");
                     Intent intent = new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
                     startActivity(intent);
                 })
-                .setNegativeButton("إلغاء", (dialogInterface, which) -> {
+                .setNegativeButton(getString(R.string.cancel), (dialogInterface, which) -> {
                     Log.d(TAG, "User clicked Cancel button");
                 })
                 .setCancelable(false)
                 .create();
             
-            // Set dialog text colors to ensure visibility
+            // Set button text colors for better visibility against primary background
             dialog.setOnShowListener(dialogInterface -> {
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
-                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(android.R.color.white));
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(android.R.color.white));
             });
             
             Log.d(TAG, "Showing dialog...");
@@ -269,9 +270,30 @@ public class MainActivity extends BaseActivity {
      * Start the repeating reminder service
      */
     private void startRepeatingService() {
+        // Check if mobile is in silent mode
+        checkSilentModeAndNotify();
+        
         Intent repeatServiceIntent = new Intent(this, RepeatReminderService.class);
         startService(repeatServiceIntent);
         Log.d(TAG, "Service started");
+    }
+    
+    /**
+     * Check if mobile is in silent mode and notify user
+     */
+    private void checkSilentModeAndNotify() {
+        try {
+            android.media.AudioManager audioManager = (android.media.AudioManager) getSystemService(AUDIO_SERVICE);
+            if (audioManager != null) {
+                int ringerMode = audioManager.getRingerMode();
+                if (ringerMode == android.media.AudioManager.RINGER_MODE_SILENT || 
+                    ringerMode == android.media.AudioManager.RINGER_MODE_VIBRATE) {
+                    Utils.showTopMiddleToast(this, getString(R.string.mobile_silent_mode));
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error checking silent mode", e);
+        }
     }
 
     /**

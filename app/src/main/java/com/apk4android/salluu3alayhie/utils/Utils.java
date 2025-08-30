@@ -3,6 +3,8 @@ package com.apk4android.salluu3alayhie.utils;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import com.apk4android.salluu3alayhie.R;
 import com.apk4android.salluu3alayhie.common.App;
@@ -19,8 +21,8 @@ public class Utils {
     
     private static final String PREF_NAME = "setTimes";
     private static final String PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.apk4android.salluu3alayhie";
-    private static final String SHARE_SUBJECT = "صلوا عليه";
-    private static final String SHARE_MESSAGE = "ارسل التطبيق الى اصدقائك واكسب الاجر \n\n";
+    private static final String SHARE_SUBJECT = "صلوا عليه"; // This will be replaced with string resource
+    private static final String SHARE_MESSAGE = "ارسل التطبيق الى اصدقائك واكسب الاجر \n\n"; // This will be replaced with string resource
 
     /**
      * Get shared preferences instance
@@ -43,17 +45,35 @@ public class Utils {
         try {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT, SHARE_SUBJECT);
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "صلوا عليه"); // Using direct string for now
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "ارسل التطبيق الى اصدقائك واكسب الاجر \n\n" + PLAY_STORE_URL); // Using direct string for now
             
-            String shareText = SHARE_MESSAGE + PLAY_STORE_URL + " \n\n";
-            shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
-            
-            activity.startActivity(Intent.createChooser(shareIntent, "اختر واحد"));
+            activity.startActivity(Intent.createChooser(shareIntent, activity.getString(R.string.choose_one)));
             
             Log.d(TAG, "App share intent launched");
             
         } catch (Exception e) {
             Log.e(TAG, "Error sharing app", e);
         }
+    }
+    
+    /**
+     * Show toast message at the top middle of the screen
+     */
+    public static void showTopMiddleToast(BaseActivity activity, String message, int duration) {
+        try {
+            Toast toast = Toast.makeText(activity, message, duration);
+            toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 100);
+            toast.show();
+        } catch (Exception e) {
+            Log.e(TAG, "Error showing top middle toast", e);
+        }
+    }
+    
+    /**
+     * Show toast message at the top middle of the screen with default duration
+     */
+    public static void showTopMiddleToast(BaseActivity activity, String message) {
+        showTopMiddleToast(activity, message, Toast.LENGTH_LONG);
     }
 }

@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">صلِّ على محمد</string>
+    <string name="app_name">صلِّ على محمد</string>
     <string name="app_notification_desc">منبه الصلاة على محمد صلى الله عليه وسلم</string>
     <string name="the_aya">
-        إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ ۚ يَا أَيُّهَا الَّذِينَ آمَنُوا صَلُّوا عَلَيْهِ وَسَلِّمُوا تَسْلِيمًا (56)
+        إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ ۚ يَا أَيُّهَا الَّذِينَ آمَنُوا صَلُّوا عَلَيْهِ وَسَلِّمُوا تَسْلِيمًا (56)
 الاحزاب   </string>
     <string name="alarm_period">اختر مدة التذكير</string>
     <string name="aboutTextView">
@@ -29,4 +29,30 @@
     <string name="voice_reminder">تذكير بصوت</string>
     <string name="share_app">شارك التطبيق</string>
     <string name="about_app">عن التطبيق</string>
+    
+    <!-- Dialog strings -->
+    <string name="permission_required">إذن مطلوب</string>
+    <string name="exact_alarm_permission_message">يحتاج التطبيق إلى إذن لتشغيل التنبيهات الدقيقة. يرجى الذهاب إلى الإعدادات والسماح للتطبيق بتشغيل التنبيهات الدقيقة.</string>
+    <string name="settings">الإعدادات</string>
+    <string name="cancel">إلغاء</string>
+    
+    <!-- Toast and notification messages -->
+    <string name="app_limited_functionality">سيتم تشغيل التطبيق مع وظائف محدودة</string>
+    <string name="please_select_timer">يرجى اختيار وقت للتذكير</string>
+    <string name="timer_started_message" formatted="false">تم تشغيل التذكير لكل %d %s</string>
+    <string name="minute">دقيقة</string>
+    <string name="minutes">دقائق</string>
+    <string name="timer_stopped">تم الايقاف</string>
+    <string name="pray_on_muhammad">صل على محمد</string>
+    
+    <!-- Share app strings -->
+    <string name="share_subject">صلوا عليه</string>
+    <string name="share_message">ارسل التطبيق الى اصدقائك واكسب الاجر \n\n</string>
+    <string name="choose_one">اختر واحد</string>
+    
+    <!-- Service strings -->
+    <string name="prayer_reminder_service">منبه الصلاة على محمد صلى الله عليه وسلم</string>
+    
+    <!-- Silent mode notification -->
+    <string name="mobile_silent_mode">الهاتف في الوضع الصامت - قد لا تسمع التذكير</string>
 </resources>
