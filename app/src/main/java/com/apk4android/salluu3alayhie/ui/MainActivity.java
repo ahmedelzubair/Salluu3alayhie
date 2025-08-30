@@ -38,6 +38,9 @@ public class MainActivity extends BaseActivity {
     // Permission request launcher
     private final ActivityResultLauncher<String[]> requestMultiplePermissionsLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), this::handlePermissionResult);
+    
+    // Track if permission dialog was shown to avoid repeated dialogs
+    private boolean exactAlarmPermissionDialogShown = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,13 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         initViews();
         setViewsListeners();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Check exact alarm permission when app resumes (e.g., after returning from Settings)
+        checkExactAlarmPermission();
     }
 
     @Override
@@ -241,11 +251,16 @@ public class MainActivity extends BaseActivity {
         boolean canScheduleExact = alarmManager.canScheduleExactAlarms();
         Log.d(TAG, "Can schedule exact alarms: " + canScheduleExact);
         
-        if (!canScheduleExact) {
+        if (!canScheduleExact && !exactAlarmPermissionDialogShown) {
             Log.d(TAG, "Showing exact alarm permission dialog");
+            exactAlarmPermissionDialogShown = true;
             showExactAlarmPermissionDialog();
-        } else {
+        } else if (canScheduleExact) {
             Log.d(TAG, "Exact alarm permission already granted");
+            // Reset flag if permission is granted
+            exactAlarmPermissionDialogShown = false;
+        } else {
+            Log.d(TAG, "Exact alarm permission dialog already shown, not showing again");
         }
     }
 
@@ -262,11 +277,18 @@ public class MainActivity extends BaseActivity {
                     Log.d(TAG, "User clicked Settings button");
                     Intent intent = new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
                     startActivity(intent);
+                    // Dismiss the dialog after launching settings
+                    dialogInterface.dismiss();
                 })
                 .setNegativeButton(getString(R.string.cancel), (dialogInterface, which) -> {
                     Log.d(TAG, "User clicked Cancel button");
+                    // Dismiss the dialog
+                    dialogInterface.dismiss();
                 })
-                .setCancelable(false)
+                .setCancelable(true) // Allow dismissing by tapping outside
+                .setOnCancelListener(dialogInterface -> {
+                    Log.d(TAG, "Dialog cancelled by user");
+                })
                 .create();
             
             // Set button text colors for better visibility against primary background
@@ -296,11 +318,18 @@ public class MainActivity extends BaseActivity {
                     Log.d(TAG, "User clicked Settings button");
                     Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
                     startActivity(intent);
+                    // Dismiss the dialog after launching settings
+                    dialogInterface.dismiss();
                 })
                 .setNegativeButton(getString(R.string.cancel), (dialogInterface, which) -> {
                     Log.d(TAG, "User clicked Cancel button");
+                    // Dismiss the dialog
+                    dialogInterface.dismiss();
                 })
-                .setCancelable(false)
+                .setCancelable(true) // Allow dismissing by tapping outside
+                .setOnCancelListener(dialogInterface -> {
+                    Log.d(TAG, "Dialog cancelled by user");
+                })
                 .create();
             
             // Set button text colors for better visibility against primary background
