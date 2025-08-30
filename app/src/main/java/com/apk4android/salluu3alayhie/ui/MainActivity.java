@@ -102,14 +102,21 @@ public class MainActivity extends BaseActivity {
      * Handle permission result from runtime permission request
      */
     private void handlePermissionResult(java.util.Map<String, Boolean> permissions) {
-        boolean allGranted = permissions.values().stream().allMatch(granted -> granted);
+        // Check if all permissions are granted using traditional for loop (API 21 compatible)
+        boolean allGranted = true;
+        for (Boolean granted : permissions.values()) {
+            if (!granted) {
+                allGranted = false;
+                break;
+            }
+        }
         
         if (allGranted) {
             Log.d(TAG, "All permissions granted");
             startRepeatingService();
         } else {
             Log.w(TAG, "Some permissions denied, starting service with limited functionality");
-                                Utils.showWindowManagerToast(this, getString(R.string.app_limited_functionality), Toast.LENGTH_LONG);
+            Utils.showWindowManagerToast(this, getString(R.string.app_limited_functionality), Toast.LENGTH_LONG);
             startRepeatingService();
         }
     }

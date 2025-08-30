@@ -1,0 +1,404 @@
+# .cursorrules (Android)
+# Opinionated rules for modern Android apps—production-ready, secure, testable.
+# Keep post-code explanation minimal unless explicitly requested.
+
+meta:
+  applies_to: ["android", "java"]
+  java_version: "1.9+"
+  android_gradle_plugin: "8.5+"
+  compile_sdk: 35
+  min_sdk: 23
+  default_jdk: "8"
+  build_files: ["build.gradle", "settings.gradle", "gradle/libs.versions.toml"]
+  ui_toolkit_preference: ["Jetpack Compose (Material3)"]
+  explain_after_code: "minimal"
+
+interaction:
+  - If the user asks for code, respond with a single fenced block and no extra text unless asked to explain.
+  - Prefer one best-practice solution; note alternatives via TODO comments inside code only.
+  - Ask at most one clarifying question only if absolutely blocking.
+
+project_structure:
+  - Use multi-module Gradle (app, core:ui, core:designsystem, core:data, core:network, core:database, feature:*).
+  - Enforce clean architecture: feature -> domain -> data -> (network/db); UI layer depends only on domain + design system.
+  - Avoid god modules; keep feature modules independent and isolated.
+
+language_and_style:
+  - Java-first. Use data classes, sealed interfaces, value classes where appropriate.
+  - Coroutines + Flow for async/reactive; no Rx unless legacy interop is required.
+  - Avoid nullable fields; prefer explicit Option-like semantics or default values.
+
+ui_rules:
+  - Prefer Compose (Material3, theming, typography, shapes). XML only for legacy/interop.
+  - Stateless composables with state hoisted to ViewModel (UDF/MVI or MVVM with single source of truth).
+  - Avoid recomposition pitfalls: remember keys, stable collections, derivedStateOf, immutable data.
+  - Accessibility: contentDescription, minimum touch targets, TalkBack friendly, dynamic font scaling (sp).
+  - Dark mode support by default; no hard-coded colors—use theme tokens.
+  - No hard coded strings always use string.xml and support localization if required.
+
+data_layer:
+  - Networking: Retrofit + OkHttp (or Ktor Client for multiplatform); enable timeouts, logging in debug only.
+  - JSON: Javax.serialization preferred; Moshi acceptable if ecosystem requires.
+  - Database: Room; migrations mandatory; no destructive migrations in prod.
+  - Local key-value: DataStore (Preferences/Proto); no SharedPreferences in new code.
+  - Repository pattern with Result/Either for errors; no throwing across layer boundaries.
+
+error_handling:
+  - Represent failures explicitly (sealed types). No blanket try/catch.
+  - Map network/IO/domain errors to user-friendly messages in ViewModel.
+
+security_and_privacy:
+  - Store secrets outside repo (Gradle Secrets Plugin / CI vars). No API keys in code.
+  - Use EncryptedFile/EncryptedSharedPreferences only if needed; otherwise DataStore + Tink for sensitive data.
+  - Strict permission gating with runtime checks + rationale; request minimum scope.
+  - Network security config with cleartext disabled (except debug); pin if threat model requires.
+  - Analytics and Crashlytics gated by explicit user consent; avoid PII logging.
+
+logging_and_observability:
+  - Timber for logging (debug only). Mask tokens/PII.
+  - Crashlytics + custom keys for breadcrumbs; enable ANR reporting.
+  - App Startup for early init; defer heavy init; add startup tracing if needed.
+
+performance:
+  - StrictMode enabled in debug (VM + thread). Baseline Profiles + R8 full mode for release.
+  - Compose performance: avoid heavy work in composition; use snapshotFlow sparingly.
+  - Image loading: Coil; cache strategy defined; placeholders/sizing set.
+
+build_and_ci:
+  - Gradle KTS, version catalogs, build cache, configuration cache.
+  - Build types: debug, release, staging. Product flavors optional (env, market).
+  - R8/ProGuard enabled; keep rules maintained (Room, serialization, Hilt, OkHttp/Retrofit, Coil).
+  - CI: assemble, unit tests, androidTest (instrumented), lint, detekt, ktlint, dependency updates, baseline profile generation.
+  - Versioning: SemVer for versionName; monotonic versionCode (e.g., YYYYMMDDxx).
+
+testing:
+  - Unit: JUnit5 (or JUnit4 if required), MockK, Turbine (Flow), Truth/AssertJ.
+  - Android: Robolectric for JVM UI tests; Instrumented with Espresso + Compose UI Test.
+  - Snapshot tests for Compose where valuable.
+  - Test pyramid: unit > integration > UI; deterministic tests (IdlingResource/awaitIdle).
+  - Minimum coverage 80% (Jacoco). No sleeps; use proper dispatchers and TestCoroutineScheduler.
+
+resources_and_i18n:
+  - Strings in resources; no hard-coded literals. Support RTL, pluralization, formatting via string resources.
+  - Dimension/spacing tokens; support large/small screens and tablets; responsive layouts.
+
+release_and_store:
+  - App signing via Play App Signing; per-env keystores via CI secrets.
+  - Play feature delivery/options documented; shrinkResources + minifyEnabled true in release.
+  - Privacy policy & data safety forms aligned with actual telemetry.
+
+analytics:
+  - GA4 or preferred analytics with explicit consent & event schema; events typed and centralized; no ad-hoc logging.
+
+crash_handling:
+  - Non-fatal recording for known recoverable errors; user messaging via snackbar/toast/dialog as appropriate.
+
+# .cursorrules (Android - Java)
+# Opinionated rules for modern Android apps using **Java**. Production-ready, secure, testable.
+# Keep post-code explanation minimal unless explicitly requested.
+
+meta:
+  applies_to: ["android", "java"]
+  language: "Java"
+  jdk_toolchain: "17"          # Use JDK 17 toolchain with Android desugaring enabled
+  android_gradle_plugin: "8.5+"
+  compile_sdk: 35
+  min_sdk: 23
+  ui_toolkit_preference: ["Views XML + Material Components"]   # Compose is Kotlin-only; avoid unless mixed-language
+  build_files: ["build.gradle.kts", "settings.gradle.kts", "gradle/libs.versions.toml"]
+  explain_after_code: "minimal"
+
+interaction:
+  - If the user asks for code, respond with a single fenced block and no extra text unless asked to explain.
+  - Prefer one best-practice solution; mention alternatives only via TODO comments inside code.
+  - Ask at most one clarifying question only if absolutely blocking.
+
+project_structure:
+  - Use multi-module Gradle where app grows (app, core:ui, core:designsystem, core:network, core:database, feature:*).
+  - Adopt Clean Architecture: presentation (Activity/Fragment/ViewModel) -> domain (use-cases) -> data (repo, datasource).
+  - No god classes; keep feature modules independent.
+
+language_and_style:
+  - Target Java 17 syntax as supported by Android desugaring (no reflection-heavy/unsafe APIs).
+  - Prefer immutability: final fields, builders, defensive copies.
+  - Avoid nulls: validate inputs; use Optional only for return types (not fields/params).
+  - Use records only in non-Android modules if needed; Android toolchain support may vary—prefer classic POJOs on Android.
+
+ui_rules:
+  - XML layouts with Material3 components; themes, typography, shape tokens; support dark mode.
+  - Use ViewBinding; avoid findViewById and synthetic accessors.
+  - Single-activity + Fragment navigation where feasible.
+  - Accessibility: contentDescription, touch targets ≥48dp, TalkBack labels, font scaling (sp).
+
+state_and_presentation:
+  - AndroidX ViewModel + LiveData/MutableLiveData (or Reactive streams via RxJava3).
+  - UI state in ViewModel; Fragments/Activities are thin controllers.
+  - Avoid leaking contexts; observe lifecycle properly.
+
+navigation:
+  - Jetpack Navigation component (fragment-based). Typed args via Safe Args.
+  - Handle back stack and deep links per feature; no global singletons for navigation.
+
+dependency_injection:
+  - Hilt (Java-compatible) preferred; else Dagger 2.
+  - Constructor injection only; proper scoping (Singleton/ActivityRetained/ViewModel).
+
+data_layer:
+  - Networking: Retrofit + OkHttp; timeouts; logging interceptor in debug only.
+  - JSON: Gson or Moshi (choose one per project; default to Moshi).
+  - Database: Room (Java annotations); migrations mandatory; no destructive migrations in release.
+  - Key-value storage: EncryptedSharedPreferences (Security Crypto); avoid plain SharedPreferences.
+  - Repository pattern returning Result/Either-like wrappers; no throwing across layer boundaries.
+
+concurrency_and_background:
+  - Use WorkManager for deferrable background work.
+  - Use bounded ExecutorService / ThreadPoolExecutor; avoid unbounded creation.
+  - For reactive pipelines, RxJava3 with schedulers; ensure subscription disposal on lifecycle.
+
+error_handling:
+  - Represent failures explicitly (sealed-like via interfaces/classes in Java).
+  - Map data-layer errors to domain then user messages in ViewModel.
+  - No blanket try/catch; never swallow exceptions; log with context.
+
+security_and_privacy:
+  - Secrets outside repo (Gradle Secrets Plugin/CI vars). No API keys in code.
+  - Network Security Config: disable cleartext by default; enable per-domain in debug only.
+  - Strict permission gating with runtime checks + rationale; request minimal scope.
+  - Mask PII/tokens in logs; no full request/response bodies in release.
+
+logging_and_observability:
+  - Timber for logging (classical static wrapper ok); plant trees only in Application.
+  - Crashlytics with custom keys/breadcrumbs; ANR reporting enabled.
+  - Startup optimization via App Startup; defer heavy init.
+
+performance:
+  - StrictMode in debug (VM + thread); fix violations or suppress with justification.
+  - R8 enabled; resource shrinking on release; keep rules maintained (Room, Moshi/Gson, OkHttp, Retrofit, Hilt).
+  - Image loading: Coil is Kotlin-first; prefer Glide (Java-friendly) with disk cache strategies.
+
+build_and_ci:
+  - Gradle KTS + version catalogs; build cache + configuration cache.
+  - Build types: debug, release, staging. Product flavors per env if needed.
+  - CI: assemble, unit tests, androidTest, lint, SpotBugs/PMD/Checkstyle, coverage (Jacoco), dependency updates.
+
+testing:
+  - Unit: JUnit4 (or JUnit5 with runner), Mockito (inline), Truth/AssertJ.
+  - Android: Robolectric for JVM tests; Espresso for instrumented UI.
+  - IdlingResource / CountingIdlingResource for async UI tests.
+  - Test pyramid: unit > integration > UI; deterministic tests only; avoid sleeps.
+  - Minimum line coverage 80% (Jacoco). Enforce mutation or branch coverage where feasible.
+
+resources_and_i18n:
+  - All strings in resources (plurals, formatting); support RTL.
+  - Use dimens tokens; support tablets/large screens with sw qualifiers.
+
+release_and_store:
+  - Play App Signing; keystores via CI secrets.
+  - Proguard/R8 rules reviewed; Data safety + privacy forms match actual telemetry.
+  - Versioning: SemVer for versionName; monotonically increasing versionCode.
+
+feature_flags:
+  - Remote Config or build-time flags; no hidden debug toggles in release builds.
+
+analytics:
+  - GA4 or chosen analytics gated by consent; centralize event schema; avoid ad-hoc logs.
+
+crash_handling:
+  - Record non-fatals for known recoverables; user messaging via Snackbar/Dialog where appropriate.
+
+build_quality_gates:
+  - Android Lint: zero new warnings; treat baseline strictly.
+  - Formatting: Spotless + google-java-format; CI fails on violations.
+  - Static analysis: Checkstyle (Google style), PMD, SpotBugs (nullness, threading).
+  - Dependency versions pinned via catalogs; no dynamic “+”.
+
+gradle_rules:
+  - Enable build cache, configuration cache, parallel builds.
+  - Use convention plugins for common config; centralize compiler flags and lint options.
+  - Enable baseline profiles generation (macrobenchmark module if needed).
+
+assets_and_media:
+  - Prefer vector drawables; WebP/AVIF for bitmaps; provide multiple densities.
+  - Large assets via on-demand delivery if size-sensitive.
+
+editor_and_formatting:
+  - .editorconfig enforced (Java/XML: 2 spaces, max line length 120, newline at EOF).
+  - Organize imports; explicit visibility; no wildcard imports.
+
+non_functional_defaults:
+  - Time via java.time (ThreeTenBP on older APIs if needed); persist UTC; format with Locale.
+  - Network/IO off main thread; Lint rules enforced.
+
+enforcement:
+  - Reject changes that weaken security (disabling SSL checks, embedding secrets).
+  - If an anti-pattern is unavoidable, provide the safest minimal version and mark with WARN comments.
+
+file_templates:
+  enable_templates: true
+  templates:
+    activity: |
+      package ${package}.ui;
+
+      import android.os.Bundle;
+      import androidx.appcompat.app.AppCompatActivity;
+      import com.google.android.material.snackbar.Snackbar;
+
+      public class ${Name}Activity extends AppCompatActivity {
+        @Override protected void onCreate(Bundle savedInstanceState) {
+          super.onCreate(savedInstanceState);
+          setContentView(R.layout.${layout});
+          // TODO: init UI, obtain ViewModel, observe state
+        }
+      }
+    fragment: |
+      package ${package}.ui.${feature};
+
+      import android.os.Bundle;
+      import android.view.LayoutInflater;
+      import android.view.View;
+      import android.view.ViewGroup;
+      import androidx.annotation.NonNull;
+      import androidx.annotation.Nullable;
+      import androidx.fragment.app.Fragment;
+      import androidx.lifecycle.ViewModelProvider;
+      import ${package}.R;
+
+      public class ${Name}Fragment extends Fragment {
+        private ${Name}ViewModel vm;
+
+        @Nullable @Override
+        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+          return inflater.inflate(R.layout.${layout}, container, false);
+        }
+
+        @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+          vm = new ViewModelProvider(this).get(${Name}ViewModel.class);
+          // TODO observe LiveData and render
+        }
+      }
+    viewmodel: |
+      package ${package}.ui.${feature};
+
+      import androidx.lifecycle.LiveData;
+      import androidx.lifecycle.MutableLiveData;
+      import androidx.lifecycle.ViewModel;
+
+      public class ${Name}ViewModel extends ViewModel {
+        private final MutableLiveData<${Name}State> state = new MutableLiveData<>(new ${Name}State());
+
+        public LiveData<${Name}State> getState() { return state; }
+
+        public void load() {
+          state.postValue(${Name}State.loading());
+          // TODO: call repo on background thread and post result
+        }
+
+        public static final class ${Name}State {
+          public final boolean loading;
+          public final String error;
+          // TODO: add fields
+          public ${Name}State() { this(false, null); }
+          private ${Name}State(boolean loading, String error) { this.loading = loading; this.error = error; }
+          public static ${Name}State loading() { return new ${Name}State(true, null); }
+          public static ${Name}State error(String e) { return new ${Name}State(false, e); }
+        }
+      }
+    repository: |
+      package ${package}.data;
+
+      public interface ${Name}Repository {
+        Result<${Type}> fetch();
+
+        final class Result<T> {
+          public final T value; public final String error;
+          private Result(T v, String e) { this.value = v; this.error = e; }
+          public static <T> Result<T> success(T v) { return new Result<>(v, null); }
+          public static <T> Result<T> failure(String e) { return new Result<>(null, e); }
+          public boolean isSuccess() { return error == null; }
+        }
+      }
+    retrofit_api: |
+      package ${package}.network;
+
+      import retrofit2.Call;
+      import retrofit2.http.GET;
+      import retrofit2.http.Path;
+
+      public interface ${Name}Api {
+        @GET("${basePath}/{id}")
+        Call<${Dto}> getById(@Path("id") String id);
+      }
+    dagger_module: |
+      package ${package}.di;
+
+      import dagger.Module;
+      import dagger.Provides;
+      import dagger.hilt.InstallIn;
+      import dagger.hilt.components.SingletonComponent;
+      import okhttp3.OkHttpClient;
+      import okhttp3.logging.HttpLoggingInterceptor;
+      import retrofit2.Retrofit;
+      import retrofit2.converter.moshi.MoshiConverterFactory;
+      import javax.inject.Singleton;
+
+      @Module
+      @InstallIn(SingletonComponent.class)
+      public final class NetworkModule {
+        @Provides @Singleton
+        static OkHttpClient okHttpClient() {
+          OkHttpClient.Builder b = new OkHttpClient.Builder();
+          b.callTimeout(java.time.Duration.ofSeconds(30));
+          b.connectTimeout(java.time.Duration.ofSeconds(10));
+          b.readTimeout(java.time.Duration.ofSeconds(20));
+          b.writeTimeout(java.time.Duration.ofSeconds(20));
+          if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor i = new HttpLoggingInterceptor();
+            i.setLevel(HttpLoggingInterceptor.Level.BODY);
+            b.addInterceptor(i);
+          }
+          return b.build();
+        }
+
+        @Provides @Singleton
+        static Retrofit retrofit(OkHttpClient client) {
+          return new Retrofit.Builder()
+              .baseUrl(BuildConfig.API_BASE_URL)
+              .client(client)
+              .addConverterFactory(MoshiConverterFactory.create())
+              .build();
+        }
+      }
+    room_entity: |
+      package ${package}.db;
+
+      import androidx.room.Entity;
+      import androidx.room.PrimaryKey;
+
+      @Entity(tableName = "${table}")
+      public class ${Name}Entity {
+        @PrimaryKey @NonNull public String id;
+        // TODO fields + constructors/getters/setters
+      }
+    room_dao: |
+      package ${package}.db;
+
+      import androidx.room.Dao;
+      import androidx.room.Insert;
+      import androidx.room.OnConflictStrategy;
+      import androidx.room.Query;
+      import java.util.List;
+
+      @Dao
+      public interface ${Name}Dao {
+        @Query("SELECT * FROM ${table} WHERE id = :id")
+        ${Name}Entity findById(String id);
+
+        @Insert(onConflict = OnConflictStrategy.REPLACE)
+        void upsert(${Name}Entity entity);
+
+        @Query("DELETE FROM ${table}")
+        void clear();
+      }
+
+# Reminder to the assistant (enforced):
+# Do NOT add too much explanation once you finish coding unless the user asks for it.
