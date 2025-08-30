@@ -55,14 +55,7 @@ public class ReminderPlayer {
             playSoundOrAya();
         } else {
             Log.d(TAG, "Sound system busy, showing toast instead");
-            // Show toast at top middle for better visibility
-            try {
-                Toast toast = Toast.makeText(context, context.getString(R.string.pray_on_muhammad), Toast.LENGTH_SHORT);
-                toast.setGravity(android.view.Gravity.TOP | android.view.Gravity.CENTER_HORIZONTAL, 0, 100);
-                toast.show();
-            } catch (Exception e) {
-                Log.e(TAG, "Error showing toast", e);
-            }
+            showPrayerToast();
             notifyPlaybackComplete();
         }
     }
@@ -84,6 +77,26 @@ public class ReminderPlayer {
         } else {
             Log.e(TAG, "Failed to create MediaPlayer");
             notifyPlaybackComplete();
+        }
+    }
+
+    /**
+     * Show prayer reminder toast with proper positioning
+     */
+    private void showPrayerToast() {
+        try {
+                            if (context instanceof com.apk4android.salluu3alayhie.common.BaseActivity) {
+                    com.apk4android.salluu3alayhie.utils.Utils.showWindowManagerToast(
+                        (com.apk4android.salluu3alayhie.common.BaseActivity) context, 
+                        context.getString(R.string.pray_on_muhammad), 
+                        Toast.LENGTH_SHORT
+                    );
+                } else {
+                    // Fallback to regular toast if context is not BaseActivity
+                    Toast.makeText(context, context.getString(R.string.pray_on_muhammad), Toast.LENGTH_SHORT).show();
+                }
+        } catch (Exception e) {
+            Log.e(TAG, "Error showing prayer toast", e);
         }
     }
 

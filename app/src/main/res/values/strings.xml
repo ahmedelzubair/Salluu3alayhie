@@ -55,4 +55,11 @@
     
     <!-- Silent mode notification -->
     <string name="mobile_silent_mode">الهاتف في الوضع الصامت - قد لا تسمع التذكير</string>
+    
+    <!-- App Features -->
+    <string name="app_features_title">مميزات التطبيق / App Features</string>
+    <string name="feature_prayer_reminder">تذكير دوري بالصلاة على النبي محمد صلى الله عليه وسلم</string>
+    <string name="feature_timer_options">خيارات متعددة للتوقيت (5 دقائق إلى 30 دقيقة)</string>
+    <string name="feature_audio_notifications">تنبيهات صوتية وقرآنية</string>
+    <string name="feature_background_service">يعمل في الخلفية مع إشعارات مستمرة</string>
 </resources>

@@ -57,4 +57,11 @@
     
     <!-- Silent mode notification -->
     <string name="mobile_silent_mode">Mobile is in silent mode - you may not hear the reminder</string>
+    
+    <!-- App Features -->
+    <string name="app_features_title">App Features</string>
+    <string name="feature_prayer_reminder">Regular reminders to pray on Prophet Muhammad (PBUH)</string>
+    <string name="feature_timer_options">Multiple timer options (5 minutes to 30 minutes)</string>
+    <string name="feature_audio_notifications">Audio and Quranic notifications</string>
+    <string name="feature_background_service">Runs in background with continuous notifications</string>
 </resources>
