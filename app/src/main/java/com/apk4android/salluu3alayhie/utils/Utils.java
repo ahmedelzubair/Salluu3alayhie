@@ -177,20 +177,33 @@ public class Utils {
         try {
             Log.d(TAG, "Creating UNIVERSAL top middle toast: " + message);
             
-            // Use the floating overlay solution that works on all Android versions
+            // Method 1: Try the floating overlay solution
             if (showCustomFloatingToast(context, message, duration)) {
                 Log.d(TAG, "Custom floating toast shown successfully");
                 return;
             }
             
-            // Fallback to regular toast if floating toast fails
-            Log.d(TAG, "Floating toast failed, using fallback");
-            Toast.makeText(context, message, duration).show();
+            // Method 2: Try to create a custom toast with positioning
+            if (tryCustomToastWithPositioning(context, message, duration)) {
+                Log.d(TAG, "Custom positioned toast shown successfully");
+                return;
+            }
+            
+            // Method 3: Try to use application context with positioning
+            if (tryApplicationContextToast(context, message, duration)) {
+                Log.d(TAG, "Application context positioned toast shown successfully");
+                return;
+            }
+            
+            // Method 4: Ultimate fallback - basic toast but try to position it
+            Log.d(TAG, "All custom methods failed, using positioned fallback");
+            showPositionedFallbackToast(context, message, duration);
             
         } catch (Exception e) {
             Log.e(TAG, "All toast methods failed", e);
             // Last resort - basic toast
             try {
+                Log.d(TAG, "Showing basic fallback toast at default position");
                 Toast.makeText(context, message, duration).show();
             } catch (Exception fallbackException) {
                 Log.e(TAG, "Even basic toast failed", fallbackException);
@@ -298,7 +311,7 @@ public class Utils {
                 } catch (Exception e) {
                     Log.e(TAG, "Error removing custom toast", e);
                 }
-            }, duration == Toast.LENGTH_LONG ? 3500 : 2000);
+            }, duration == Toast.LENGTH_LONG ? 5000 : 3000);
             
             Log.d(TAG, "Custom top middle toast shown successfully");
             
@@ -316,6 +329,13 @@ public class Utils {
     private static boolean showCustomFloatingToast(Context context, String message, int duration) {
         try {
             Log.d(TAG, "Creating floating toast: " + message);
+            
+            // Check if SYSTEM_ALERT_WINDOW permission is granted
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M && 
+                !android.provider.Settings.canDrawOverlays(context)) {
+                Log.d(TAG, "SYSTEM_ALERT_WINDOW permission not granted, falling back to default toast");
+                return false;
+            }
             
             // Get the window manager
             android.view.WindowManager windowManager = (android.view.WindowManager) context.getSystemService(android.content.Context.WINDOW_SERVICE);
@@ -363,7 +383,7 @@ public class Utils {
                 } catch (Exception e) {
                     Log.e(TAG, "Error removing floating toast", e);
                 }
-            }, duration == Toast.LENGTH_LONG ? 3500 : 2000);
+            }, duration == Toast.LENGTH_LONG ? 5000 : 3000);
             
             Log.d(TAG, "Floating toast shown successfully at y: " + yOffset);
             return true;
@@ -384,8 +404,8 @@ public class Utils {
             android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
             android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
         ));
-        container.setOrientation(android.widget.LinearLayout.VERTICAL);
-        container.setGravity(android.view.Gravity.CENTER);
+        container.setOrientation(android.widget.LinearLayout.HORIZONTAL); // Changed to horizontal for icon + text
+        container.setGravity(android.view.Gravity.CENTER_VERTICAL);
         
         // Set background with rounded corners and shadow
         android.graphics.drawable.GradientDrawable background = new android.graphics.drawable.GradientDrawable();
@@ -407,20 +427,137 @@ public class Utils {
         int padding = (int) (16 * context.getResources().getDisplayMetrics().density);
         container.setPadding(padding, padding, padding, padding);
         
+        // Create and style the icon
+        android.widget.ImageView iconView = new android.widget.ImageView(context);
+        iconView.setImageResource(com.apk4android.salluu3alayhie.R.mipmap.ic_launcher); // Use the actual app icon
+        iconView.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+            (int) (24 * context.getResources().getDisplayMetrics().density), // 24dp width
+            (int) (24 * context.getResources().getDisplayMetrics().density)  // 24dp height
+        ));
+        iconView.setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);
+        
+        // Add margin between icon and text
+        android.widget.LinearLayout.LayoutParams iconParams = (android.widget.LinearLayout.LayoutParams) iconView.getLayoutParams();
+        iconParams.setMargins(0, 0, (int) (8 * context.getResources().getDisplayMetrics().density), 0); // 8dp right margin
+        
         // Create and style the text view
         android.widget.TextView textView = new android.widget.TextView(context);
         textView.setText(message);
         textView.setTextColor(context.getResources().getColor(android.R.color.white));
         textView.setTextSize(16);
-        textView.setGravity(android.view.Gravity.CENTER);
+        textView.setGravity(android.view.Gravity.CENTER_VERTICAL);
         textView.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
             android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
             android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
         ));
         
-        // Add text view to container
+        // Add icon and text view to container
+        container.addView(iconView);
         container.addView(textView);
         
         return container;
+    }
+
+    /**
+     * Try to create a custom toast with positioning
+     */
+    private static boolean tryCustomToastWithPositioning(Context context, String message, int duration) {
+        try {
+            Log.d(TAG, "Trying custom toast with positioning");
+            
+            // Create toast with application context
+            Toast toast = Toast.makeText(context.getApplicationContext(), message, duration);
+            
+            // Try to position it at the top middle
+            toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 100);
+            
+            // Show the toast
+            toast.show();
+            Log.d(TAG, "Custom positioned toast shown");
+            return true;
+            
+        } catch (Exception e) {
+            Log.e(TAG, "Custom positioned toast failed", e);
+            return false;
+        }
+    }
+    
+    /**
+     * Try to use application context with positioning
+     */
+    private static boolean tryApplicationContextToast(Context context, String message, int duration) {
+        try {
+            Log.d(TAG, "Trying application context toast with positioning");
+            
+            // Create toast with application context
+            Toast toast = Toast.makeText(context.getApplicationContext(), message, duration);
+            
+            // Try different positioning strategies
+            int[] yOffsets = {50, 100, 150, 200};
+            
+            for (int yOffset : yOffsets) {
+                try {
+                    toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, yOffset);
+                    toast.show();
+                    Log.d(TAG, "Application context positioned toast shown with yOffset: " + yOffset);
+                    return true;
+                } catch (Exception e) {
+                    Log.d(TAG, "YOffset " + yOffset + " failed, trying next");
+                    continue;
+                }
+            }
+            
+            return false;
+            
+        } catch (Exception e) {
+            Log.e(TAG, "Application context toast failed", e);
+            return false;
+        }
+    }
+    
+    /**
+     * Show positioned fallback toast
+     */
+    private static void showPositionedFallbackToast(Context context, String message, int duration) {
+        try {
+            Log.d(TAG, "Showing positioned fallback toast");
+            
+            // Create basic toast
+            Toast toast = Toast.makeText(context, message, duration);
+            
+            // Try to position it at the top with multiple attempts
+            boolean positioned = false;
+            int[] yOffsets = {50, 100, 150, 200, 250};
+            
+            for (int yOffset : yOffsets) {
+                try {
+                    toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, yOffset);
+                    positioned = true;
+                    Log.d(TAG, "Fallback toast positioned with yOffset: " + yOffset);
+                    break;
+                } catch (Exception e) {
+                    Log.d(TAG, "Fallback positioning failed for yOffset: " + yOffset);
+                    continue;
+                }
+            }
+            
+            // Show the toast
+            toast.show();
+            
+            if (positioned) {
+                Log.d(TAG, "Positioned fallback toast shown successfully");
+            } else {
+                Log.d(TAG, "Fallback toast shown without positioning");
+            }
+            
+        } catch (Exception e) {
+            Log.e(TAG, "Positioned fallback toast failed", e);
+            // Show basic toast as last resort
+            try {
+                Toast.makeText(context, message, duration).show();
+            } catch (Exception basicException) {
+                Log.e(TAG, "Even basic fallback toast failed", basicException);
+            }
+        }
     }
 }

@@ -276,6 +276,40 @@ public class MainActivity extends BaseActivity {
         }
     }
     
+    /**
+     * Show dialog to guide user to system alert window settings
+     */
+    private void showSystemAlertWindowPermissionDialog() {
+        Log.d(TAG, "Creating system alert window permission dialog");
+        try {
+            AlertDialog dialog = new AlertDialog.Builder(this, R.style.CustomAlertDialog)
+                .setTitle(getString(R.string.permission_required))
+                .setMessage("To show prayer reminders at the top of the screen, please enable 'Display over other apps' permission in Settings.")
+                .setPositiveButton("Settings", (dialogInterface, which) -> {
+                    Log.d(TAG, "User clicked Settings button");
+                    Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                    startActivity(intent);
+                })
+                .setNegativeButton(getString(R.string.cancel), (dialogInterface, which) -> {
+                    Log.d(TAG, "User clicked Cancel button");
+                })
+                .setCancelable(false)
+                .create();
+            
+            // Set button text colors for better visibility against primary background
+            dialog.setOnShowListener(dialogInterface -> {
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(android.R.color.white));
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(android.R.color.white));
+            });
+            
+            Log.d(TAG, "Showing dialog...");
+            dialog.show();
+            Log.d(TAG, "Dialog shown successfully");
+        } catch (Exception e) {
+            Log.e(TAG, "Error showing dialog: " + e.getMessage(), e);
+        }
+    }
+    
 
 
     /**
@@ -305,13 +339,19 @@ public class MainActivity extends BaseActivity {
             permissionsToRequest.add(Manifest.permission.READ_PHONE_STATE);
         }
         
-        // Check POST_NOTIFICATIONS permission (Android 13+)
+                // Check POST_NOTIFICATIONS permission (Android 13+)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && 
             ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             permissionsToRequest.add(Manifest.permission.POST_NOTIFICATIONS);
         }
         
-
+        // Check SYSTEM_ALERT_WINDOW permission for floating toasts
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && 
+            !android.provider.Settings.canDrawOverlays(this)) {
+            // Note: SYSTEM_ALERT_WINDOW requires manual user action in settings
+            // We'll show a dialog to guide the user
+            showSystemAlertWindowPermissionDialog();
+        }
         
         return permissionsToRequest;
     }
