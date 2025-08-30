@@ -6,17 +6,57 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
-    android:paddingTop="?attr/actionBarSize"
+    android:paddingBottom="24dp"
     tools:context="com.apk4android.salluu3alayhie.ui.MainActivity">
+
+    <!-- Top Menu Buttons -->
+    <LinearLayout
+        android:id="@+id/topMenuLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/statusBarSize"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:gravity="end">
+
+        <Button
+            android:id="@+id/btnAbout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/btn_rounded_primary"
+            android:onClick="openAbout"
+            android:padding="8dp"
+            android:text="@string/about_app"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btnShare"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/btn_rounded_primary"
+            android:onClick="shareApp"
+            android:padding="8dp"
+            android:text="@string/share_app"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:layout_marginRight="5dp"
+        android:layout_below="@id/topMenuLayout"
         android:layout_marginLeft="5dp"
-        android:scrollbars="none"
-        android:overScrollMode="never">
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="16dp"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,9 +72,9 @@
                 android:layout_marginBottom="8dp"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"
+                app:cardBackgroundColor="@color/colorPrimaryDark"
                 app:cardCornerRadius="5dp"
-                app:cardElevation="3dp"
-                app:cardBackgroundColor="@color/colorPrimaryDark">
+                app:cardElevation="3dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -61,9 +101,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
+                app:cardBackgroundColor="@color/colorPrimaryDark"
                 app:cardCornerRadius="5dp"
-                app:cardElevation="3dp"
-                app:cardBackgroundColor="@color/colorPrimaryDark">
+                app:cardElevation="3dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -240,6 +280,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/btn_rounded_red"
                 android:onClick="stopAlarm"
                 android:padding="12dp"

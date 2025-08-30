@@ -9,8 +9,6 @@ import android.os.Bundle;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.ActionBar;
-
 import com.apk4android.salluu3alayhie.R;
 import com.apk4android.salluu3alayhie.common.BaseActivity;
 
@@ -20,9 +18,6 @@ public class AboutActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.title);
 
         RelativeLayout r = findViewById(R.id.RLAbout);
         TextView tvAbout = findViewById(R.id.wadelzbuair);

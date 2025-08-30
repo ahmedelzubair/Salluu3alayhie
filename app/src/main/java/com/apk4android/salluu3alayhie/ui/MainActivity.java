@@ -6,15 +6,14 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.ActionBar;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 
@@ -64,21 +63,11 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setupActionBar();
         initViews();
         setViewsListeners();
     }
 
-    /**
-     * Setup the action bar with custom title
-     */
-    private void setupActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-            actionBar.setCustomView(R.layout.title);
-        }
-    }
+
 
     @Override
     public void setViewsListeners() {
@@ -98,6 +87,20 @@ public class MainActivity extends BaseActivity {
                 Log.d(TAG, "Notification type set to Voice");
             }
         });
+    }
+
+    /**
+     * Handle about button click
+     */
+    public void openAbout(View view) {
+        openAbout();
+    }
+
+    /**
+     * Handle share button click
+     */
+    public void shareApp(View view) {
+        Utils.shareApp(this);
     }
 
     @Override
@@ -177,11 +180,23 @@ public class MainActivity extends BaseActivity {
      * Check and request exact alarm permission for Android 12+
      */
     private void checkExactAlarmPermission() {
+        Log.d(TAG, "Checking exact alarm permission...");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             android.app.AlarmManager alarmManager = (android.app.AlarmManager) getSystemService(android.content.Context.ALARM_SERVICE);
-            if (alarmManager != null && !alarmManager.canScheduleExactAlarms()) {
-                showExactAlarmPermissionDialog();
+            if (alarmManager != null) {
+                boolean canScheduleExact = alarmManager.canScheduleExactAlarms();
+                Log.d(TAG, "Can schedule exact alarms: " + canScheduleExact);
+                if (!canScheduleExact) {
+                    Log.d(TAG, "Showing exact alarm permission dialog");
+                    showExactAlarmPermissionDialog();
+                } else {
+                    Log.d(TAG, "Exact alarm permission already granted");
+                }
+            } else {
+                Log.e(TAG, "AlarmManager is null");
             }
+        } else {
+            Log.d(TAG, "Device API level < 31, no exact alarm permission needed");
         }
     }
 
@@ -189,15 +204,34 @@ public class MainActivity extends BaseActivity {
      * Show dialog to guide user to exact alarm settings
      */
     private void showExactAlarmPermissionDialog() {
-        new AlertDialog.Builder(this)
-            .setTitle("إذن مطلوب")
-            .setMessage("يحتاج التطبيق إلى إذن لتشغيل التنبيهات الدقيقة. يرجى الذهاب إلى الإعدادات والسماح للتطبيق بتشغيل التنبيهات الدقيقة.")
-            .setPositiveButton("الإعدادات", (dialog, which) -> {
-                Intent intent = new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
-                startActivity(intent);
-            })
-            .setNegativeButton("إلغاء", null)
-            .show();
+        Log.d(TAG, "Creating exact alarm permission dialog");
+        try {
+            AlertDialog dialog = new AlertDialog.Builder(this, R.style.AppTheme)
+                .setTitle("إذن مطلوب")
+                .setMessage("يحتاج التطبيق إلى إذن لتشغيل التنبيهات الدقيقة. يرجى الذهاب إلى الإعدادات والسماح للتطبيق بتشغيل التنبيهات الدقيقة.")
+                .setPositiveButton("الإعدادات", (dialogInterface, which) -> {
+                    Log.d(TAG, "User clicked Settings button");
+                    Intent intent = new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                    startActivity(intent);
+                })
+                .setNegativeButton("إلغاء", (dialogInterface, which) -> {
+                    Log.d(TAG, "User clicked Cancel button");
+                })
+                .setCancelable(false)
+                .create();
+            
+            // Set dialog text colors to ensure visibility
+            dialog.setOnShowListener(dialogInterface -> {
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+            });
+            
+            Log.d(TAG, "Showing dialog...");
+            dialog.show();
+            Log.d(TAG, "Dialog shown successfully");
+        } catch (Exception e) {
+            Log.e(TAG, "Error showing dialog: " + e.getMessage(), e);
+        }
     }
 
     /**
@@ -247,24 +281,5 @@ public class MainActivity extends BaseActivity {
         startActivity(new Intent(this, AboutActivity.class));
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        
-        if (id == R.id.shareApp) {
-            Utils.shareApp(this);
-            return true;
-        } else if (id == R.id.aboutApp) {
-            openAbout();
-            return true;
-        }
-        
-        return super.onOptionsItemSelected(item);
-    }
 }

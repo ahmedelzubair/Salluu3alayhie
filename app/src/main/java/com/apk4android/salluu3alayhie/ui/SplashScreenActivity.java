@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.RelativeLayout;
 
-import androidx.appcompat.app.ActionBar;
-
 import com.apk4android.salluu3alayhie.R;
 import com.apk4android.salluu3alayhie.common.BaseActivity;
 
@@ -22,10 +20,6 @@ public class SplashScreenActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
-
-        //noinspection ConstantConditions
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.title);
 
         RelativeLayout r = (RelativeLayout) findViewById(R.id.RLSplash);
 
