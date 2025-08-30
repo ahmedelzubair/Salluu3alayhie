@@ -85,18 +85,20 @@ public class ReminderPlayer {
      */
     private void showPrayerToast() {
         try {
-                            if (context instanceof com.apk4android.salluu3alayhie.common.BaseActivity) {
-                    com.apk4android.salluu3alayhie.utils.Utils.showWindowManagerToast(
-                        (com.apk4android.salluu3alayhie.common.BaseActivity) context, 
-                        context.getString(R.string.pray_on_muhammad), 
-                        Toast.LENGTH_SHORT
-                    );
-                } else {
-                    // Fallback to regular toast if context is not BaseActivity
-                    Toast.makeText(context, context.getString(R.string.pray_on_muhammad), Toast.LENGTH_SHORT).show();
-                }
+            // Use the universal method that works from any context
+            com.apk4android.salluu3alayhie.utils.Utils.showTopMiddleToastUniversal(
+                context, 
+                context.getString(R.string.pray_on_muhammad), 
+                Toast.LENGTH_SHORT
+            );
         } catch (Exception e) {
             Log.e(TAG, "Error showing prayer toast", e);
+            // Ultimate fallback
+            try {
+                Toast.makeText(context, context.getString(R.string.pray_on_muhammad), Toast.LENGTH_SHORT).show();
+            } catch (Exception fallbackException) {
+                Log.e(TAG, "All toast methods failed", fallbackException);
+            }
         }
     }
 

@@ -73,7 +73,7 @@ public class AboutActivity extends BaseActivity {
             Log.d(TAG, "Website opened successfully: " + WEBSITE_URL);
         } catch (Exception e) {
             Log.e(TAG, "Error opening website: " + e.getMessage(), e);
-            Utils.showTopMiddleToast(this, "Unable to open website", Toast.LENGTH_SHORT);
+            Utils.showCustomTopMiddleToast(this, "Unable to open website", Toast.LENGTH_SHORT);
         }
     }
 

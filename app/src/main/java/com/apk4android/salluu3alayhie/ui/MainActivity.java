@@ -275,6 +275,8 @@ public class MainActivity extends BaseActivity {
             Log.e(TAG, "Error showing dialog: " + e.getMessage(), e);
         }
     }
+    
+
 
     /**
      * Check and request runtime permissions
@@ -308,6 +310,8 @@ public class MainActivity extends BaseActivity {
             ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             permissionsToRequest.add(Manifest.permission.POST_NOTIFICATIONS);
         }
+        
+
         
         return permissionsToRequest;
     }

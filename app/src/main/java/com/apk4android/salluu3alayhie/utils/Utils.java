@@ -1,5 +1,6 @@
 package com.apk4android.salluu3alayhie.utils;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -107,166 +108,6 @@ public class Utils {
     }
     
     /**
-     * Show toast message at the top middle of the screen
-     */
-    public static void showTopMiddleToast(BaseActivity activity, String message, int duration) {
-        try {
-            Log.d(TAG, "Creating top middle toast: " + message);
-            Toast toast = Toast.makeText(activity, message, duration);
-            // Use raw gravity values to ensure compatibility
-            int gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
-            Log.d(TAG, "Setting toast gravity to: " + gravity + " (TOP=" + Gravity.TOP + ", CENTER_HORIZONTAL=" + Gravity.CENTER_HORIZONTAL + ")");
-            toast.setGravity(gravity, 0, 100);
-            Log.d(TAG, "Toast gravity set to TOP | CENTER_HORIZONTAL");
-            toast.show();
-            Log.d(TAG, "Top middle toast shown successfully");
-        } catch (Exception e) {
-            Log.e(TAG, "Error showing top middle toast", e);
-        }
-    }
-    
-    /**
-     * Show toast message at the top middle of the screen with default duration
-     */
-    public static void showTopMiddleToast(BaseActivity activity, String message) {
-        showTopMiddleToast(activity, message, Toast.LENGTH_LONG);
-    }
-    
-    /**
-     * Force toast to top middle using custom positioning
-     */
-    public static void showTopMiddleToastForce(BaseActivity activity, String message, int duration) {
-        try {
-            Log.d(TAG, "Creating FORCE top middle toast: " + message);
-            
-            // Create toast with application context to avoid potential issues
-            Toast toast = Toast.makeText(activity.getApplicationContext(), message, duration);
-            
-            // Force the position using absolute positioning
-            // This bypasses any system-level gravity overrides
-            int screenHeight = activity.getResources().getDisplayMetrics().heightPixels;
-            int yOffset = (int) (screenHeight * 0.1); // 10% from top
-            
-            Log.d(TAG, "Screen height: " + screenHeight + ", Y offset: " + yOffset);
-            
-            // Set gravity to TOP and CENTER_HORIZONTAL with calculated offset
-            toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, yOffset);
-            
-            Log.d(TAG, "FORCE toast positioned, showing...");
-            toast.show();
-            Log.d(TAG, "FORCE top middle toast shown successfully");
-            
-        } catch (Exception e) {
-            Log.e(TAG, "Error showing FORCE top middle toast", e);
-            // Ultimate fallback - show regular toast if our method fails
-            try {
-                Toast.makeText(activity, message, duration).show();
-                Log.d(TAG, "Ultimate fallback toast shown");
-            } catch (Exception fallbackException) {
-                Log.e(TAG, "All toast methods failed", fallbackException);
-            }
-        }
-    }
-    
-    /**
-     * PERMANENT SOLUTION: Custom toast that works on ALL Android devices
-     * This method creates a custom view-based toast that cannot be overridden by the system
-     */
-    public static void showCustomTopMiddleToast(BaseActivity activity, String message, int duration) {
-        try {
-            Log.d(TAG, "Creating CUSTOM top middle toast: " + message);
-            
-            // Create a custom toast view that we have full control over
-            android.widget.Toast customToast = new android.widget.Toast(activity.getApplicationContext());
-            
-            // Create custom layout for the toast
-            android.view.View toastView = createCustomToastView(activity, message);
-            customToast.setView(toastView);
-            
-            // Set duration
-            customToast.setDuration(duration);
-            
-            // Calculate position - this cannot be overridden by the system
-            int screenHeight = activity.getResources().getDisplayMetrics().heightPixels;
-            int screenWidth = activity.getResources().getDisplayMetrics().widthPixels;
-            
-            // Position at top middle with proper offset
-            int xOffset = 0; // Center horizontally
-            int yOffset = (int) (screenHeight * 0.08); // 8% from top for better visibility
-            
-            Log.d(TAG, "Custom toast positioning - Screen: " + screenWidth + "x" + screenHeight + 
-                  ", X: " + xOffset + ", Y: " + yOffset);
-            
-            // Use setGravity with our calculated offsets
-            customToast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, xOffset, yOffset);
-            
-            // Show the custom toast
-            customToast.show();
-            Log.d(TAG, "CUSTOM top middle toast shown successfully");
-            
-        } catch (Exception e) {
-            Log.e(TAG, "Error showing custom top middle toast", e);
-            // Fallback to regular toast
-            try {
-                Toast.makeText(activity, message, duration).show();
-                Log.d(TAG, "Fallback toast shown");
-            } catch (Exception fallbackException) {
-                Log.e(TAG, "All toast methods failed", fallbackException);
-            }
-        }
-    }
-    
-    /**
-     * Create a custom toast view with proper styling
-     */
-    private static android.view.View createCustomToastView(BaseActivity activity, String message) {
-        // Create the main container
-        android.widget.LinearLayout container = new android.widget.LinearLayout(activity);
-        container.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
-            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
-            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
-        ));
-        container.setOrientation(android.widget.LinearLayout.VERTICAL);
-        container.setGravity(android.view.Gravity.CENTER);
-        
-        // Set background with rounded corners and shadow
-        android.graphics.drawable.GradientDrawable background = new android.graphics.drawable.GradientDrawable();
-        background.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
-        background.setCornerRadius(24); // Rounded corners
-        background.setColor(activity.getResources().getColor(com.apk4android.salluu3alayhie.R.color.colorPrimary));
-        
-        // Add border
-        background.setStroke(2, activity.getResources().getColor(android.R.color.white));
-        
-        // Apply background
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-            container.setBackground(background);
-        } else {
-            container.setBackgroundDrawable(background);
-        }
-        
-        // Add padding
-        int padding = (int) (16 * activity.getResources().getDisplayMetrics().density);
-        container.setPadding(padding, padding, padding, padding);
-        
-        // Create and style the text view
-        android.widget.TextView textView = new android.widget.TextView(activity);
-        textView.setText(message);
-        textView.setTextColor(activity.getResources().getColor(android.R.color.white));
-        textView.setTextSize(16);
-        textView.setGravity(android.view.Gravity.CENTER);
-        textView.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
-            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
-            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
-        ));
-        
-        // Add text view to container
-        container.addView(textView);
-        
-        return container;
-    }
-    
-    /**
      * ULTIMATE SOLUTION: Use WindowManager for guaranteed positioning
      * This method creates a custom overlay that cannot be overridden by the system
      */
@@ -326,5 +167,260 @@ public class Utils {
             // Fallback to custom toast
             showCustomTopMiddleToast(activity, message, duration);
         }
+    }
+    
+    /**
+     * UNIVERSAL SOLUTION: Show toast at top middle from ANY context
+     * This method works from activities, services, or any other context
+     */
+    public static void showTopMiddleToastUniversal(Context context, String message, int duration) {
+        try {
+            Log.d(TAG, "Creating UNIVERSAL top middle toast: " + message);
+            
+            // Use the floating overlay solution that works on all Android versions
+            if (showCustomFloatingToast(context, message, duration)) {
+                Log.d(TAG, "Custom floating toast shown successfully");
+                return;
+            }
+            
+            // Fallback to regular toast if floating toast fails
+            Log.d(TAG, "Floating toast failed, using fallback");
+            Toast.makeText(context, message, duration).show();
+            
+        } catch (Exception e) {
+            Log.e(TAG, "All toast methods failed", e);
+            // Last resort - basic toast
+            try {
+                Toast.makeText(context, message, duration).show();
+            } catch (Exception fallbackException) {
+                Log.e(TAG, "Even basic toast failed", fallbackException);
+            }
+        }
+    }
+    
+    /**
+     * Create a custom toast view with proper styling
+     */
+    private static android.view.View createCustomToastView(BaseActivity activity, String message) {
+        // Create the main container
+        android.widget.LinearLayout container = new android.widget.LinearLayout(activity);
+        container.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+        container.setOrientation(android.widget.LinearLayout.VERTICAL);
+        container.setGravity(android.view.Gravity.CENTER);
+        
+        // Set background with rounded corners and shadow
+        android.graphics.drawable.GradientDrawable background = new android.graphics.drawable.GradientDrawable();
+        background.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
+        background.setCornerRadius(24); // Rounded corners
+        background.setColor(activity.getResources().getColor(com.apk4android.salluu3alayhie.R.color.colorPrimary));
+        
+        // Add border
+        background.setStroke(2, activity.getResources().getColor(android.R.color.white));
+        
+        // Apply background
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            container.setBackground(background);
+        } else {
+            container.setBackgroundDrawable(background);
+        }
+        
+        // Add padding
+        int padding = (int) (16 * activity.getResources().getDisplayMetrics().density);
+        container.setPadding(padding, padding, padding, padding);
+        
+        // Create and style the text view
+        android.widget.TextView textView = new android.widget.TextView(activity);
+        textView.setText(message);
+        textView.setTextColor(activity.getResources().getColor(android.R.color.white));
+        textView.setTextSize(16);
+        textView.setGravity(android.view.Gravity.CENTER);
+        textView.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+        
+        // Add text view to container
+        container.addView(textView);
+        
+        return container;
+    }
+    
+    /**
+     * Show custom top middle toast for activities
+     */
+    public static void showCustomTopMiddleToast(BaseActivity activity, String message, int duration) {
+        try {
+            Log.d(TAG, "Creating custom top middle toast: " + message);
+            
+            // Create a custom toast view that we have full control over
+            android.view.View toastView = createCustomToastView(activity, message);
+            
+            // Get window manager
+            android.view.WindowManager windowManager = (android.view.WindowManager) activity.getSystemService(android.content.Context.WINDOW_SERVICE);
+            if (windowManager == null) {
+                Log.e(TAG, "WindowManager is null, falling back to regular toast");
+                Toast.makeText(activity, message, duration).show();
+                return;
+            }
+            
+            // Calculate position
+            int screenHeight = activity.getResources().getDisplayMetrics().heightPixels;
+            int yOffset = (int) (screenHeight * 0.08); // 8% from top
+            
+            // Create layout parameters
+            android.view.WindowManager.LayoutParams params = new android.view.WindowManager.LayoutParams(
+                android.view.WindowManager.LayoutParams.WRAP_CONTENT,
+                android.view.WindowManager.LayoutParams.WRAP_CONTENT,
+                android.view.WindowManager.LayoutParams.TYPE_APPLICATION_PANEL,
+                android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
+                android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE |
+                android.view.WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
+                android.graphics.PixelFormat.TRANSLUCENT
+            );
+            
+            // Position the toast
+            params.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+            params.x = 0;
+            params.y = yOffset;
+            
+            // Add view to window
+            windowManager.addView(toastView, params);
+            
+            // Remove view after duration
+            android.os.Handler handler = new android.os.Handler(android.os.Looper.getMainLooper());
+            handler.postDelayed(() -> {
+                try {
+                    windowManager.removeView(toastView);
+                    Log.d(TAG, "Custom toast removed");
+                } catch (Exception e) {
+                    Log.e(TAG, "Error removing custom toast", e);
+                }
+            }, duration == Toast.LENGTH_LONG ? 3500 : 2000);
+            
+            Log.d(TAG, "Custom top middle toast shown successfully");
+            
+        } catch (Exception e) {
+            Log.e(TAG, "Error showing custom top middle toast", e);
+            // Fallback to regular toast
+            Toast.makeText(activity, message, duration).show();
+        }
+    }
+    
+    /**
+     * NUCLEAR OPTION: Create a custom floating view that looks like a toast
+     * This completely bypasses Android 15's toast restrictions
+     */
+    private static boolean showCustomFloatingToast(Context context, String message, int duration) {
+        try {
+            Log.d(TAG, "Creating floating toast: " + message);
+            
+            // Get the window manager
+            android.view.WindowManager windowManager = (android.view.WindowManager) context.getSystemService(android.content.Context.WINDOW_SERVICE);
+            if (windowManager == null) {
+                Log.e(TAG, "WindowManager is null");
+                return false;
+            }
+            
+            // Create a custom view that looks like a toast
+            android.view.View floatingView = createFloatingToastView(context, message);
+            
+            // Calculate position - top middle of screen
+            android.util.DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+            int screenHeight = displayMetrics.heightPixels;
+            
+            // Position at top middle (8% from top)
+            int yOffset = (int) (screenHeight * 0.08);
+            
+            // Create window parameters
+            android.view.WindowManager.LayoutParams params = new android.view.WindowManager.LayoutParams(
+                android.view.WindowManager.LayoutParams.WRAP_CONTENT,
+                android.view.WindowManager.LayoutParams.WRAP_CONTENT,
+                android.view.WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, // Use overlay type
+                android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
+                android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE |
+                android.view.WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN |
+                android.view.WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                android.graphics.PixelFormat.TRANSLUCENT
+            );
+            
+            // Set position
+            params.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+            params.x = 0;
+            params.y = yOffset;
+            
+            // Add the view to the window
+            windowManager.addView(floatingView, params);
+            
+            // Remove after duration
+            android.os.Handler handler = new android.os.Handler(android.os.Looper.getMainLooper());
+            handler.postDelayed(() -> {
+                try {
+                    windowManager.removeView(floatingView);
+                    Log.d(TAG, "Floating toast removed successfully");
+                } catch (Exception e) {
+                    Log.e(TAG, "Error removing floating toast", e);
+                }
+            }, duration == Toast.LENGTH_LONG ? 3500 : 2000);
+            
+            Log.d(TAG, "Floating toast shown successfully at y: " + yOffset);
+            return true;
+            
+        } catch (Exception e) {
+            Log.e(TAG, "Error showing floating toast", e);
+            return false;
+        }
+    }
+    
+    /**
+     * Create a floating view that looks like a toast
+     */
+    private static android.view.View createFloatingToastView(Context context, String message) {
+        // Create the main container
+        android.widget.LinearLayout container = new android.widget.LinearLayout(context);
+        container.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+        container.setOrientation(android.widget.LinearLayout.VERTICAL);
+        container.setGravity(android.view.Gravity.CENTER);
+        
+        // Set background with rounded corners and shadow
+        android.graphics.drawable.GradientDrawable background = new android.graphics.drawable.GradientDrawable();
+        background.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
+        background.setCornerRadius(24); // Rounded corners
+        background.setColor(context.getResources().getColor(com.apk4android.salluu3alayhie.R.color.colorPrimary));
+        
+        // Add border
+        background.setStroke(2, context.getResources().getColor(android.R.color.white));
+        
+        // Apply background
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            container.setBackground(background);
+        } else {
+            container.setBackgroundDrawable(background);
+        }
+        
+        // Add padding
+        int padding = (int) (16 * context.getResources().getDisplayMetrics().density);
+        container.setPadding(padding, padding, padding, padding);
+        
+        // Create and style the text view
+        android.widget.TextView textView = new android.widget.TextView(context);
+        textView.setText(message);
+        textView.setTextColor(context.getResources().getColor(android.R.color.white));
+        textView.setTextSize(16);
+        textView.setGravity(android.view.Gravity.CENTER);
+        textView.setLayoutParams(new android.widget.LinearLayout.LayoutParams(
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+        
+        // Add text view to container
+        container.addView(textView);
+        
+        return container;
     }
 }
